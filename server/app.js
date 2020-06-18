@@ -7,6 +7,7 @@ const expressServer = app.listen(3001);
 const io = socketio(expressServer);
 
 const Game = require("./Models/Game");
+const QuotableAPI = require("./QuotableAPI");
 
 mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser: true, useUnifiedTopology: true}, () => {
     console.log("successfully connected to database");
