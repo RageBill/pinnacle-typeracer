@@ -1,0 +1,27 @@
+{
+    "name": "pinnacle-typeracer",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "format": "prettier --config ./prettier.json --write ./*.{js,jsx,ts,tsx} && prettier --config ./prettier.json --write ./{src,scripts}/*.{js,jsx,ts,tsx}"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/RageBill/pinnacle-typeracer.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/RageBill/pinnacle-typeracer/issues"
+    },
+    "homepage": "https://github.com/RageBill/pinnacle-typeracer#readme",
+    "dependencies": {
+        "express": "4.17.1",
+        "mongoose": "5.9.19",
+        "socket.io": "2.3.0",
+        "prettier": "2.0.5"
+    }
+}
