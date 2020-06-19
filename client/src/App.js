@@ -1,14 +1,22 @@
 import React from "react";
-import "./App.css";
 import "fomantic-ui-css/semantic.css";
-import {Container, Header} from "semantic-ui-react";
+import {Router, Route, Switch} from "react-router";
+import {history} from "./history";
+import {GameMenu} from "./component/GameMenu";
+import {socket} from "./socketConfig";
 
-function App() {
+export const App = () => {
+    React.useEffect(() => {
+        socket.on("test", (msg) => console.log(msg));
+    }, []);
+
     return (
-        <Container>
-            <Header>Fomantic-UI & Semantic-UI-React</Header>
-        </Container>
+        <Router history={history}>
+            <Switch>
+                <Route exact path="/" component={GameMenu} />
+            </Switch>
+        </Router>
     );
-}
+};
 
-export default App;
+App.displayName = "App";
