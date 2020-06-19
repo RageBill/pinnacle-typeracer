@@ -12,3 +12,5 @@ const QuotableAPI = require("./QuotableAPI");
 mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser: true, useUnifiedTopology: true}, () => {
     console.log("successfully connected to database");
 });
+
+io.on("connect", (socket) => socket.emit("test", "this is from server"));
