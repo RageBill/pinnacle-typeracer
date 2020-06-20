@@ -5,8 +5,8 @@ const PlayerSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    socketID: {type: String},
-    partyLeader: {type: Boolean, default: false},
+    socketId: {type: String},
+    isPartyLeader: {type: Boolean, default: false},
     WPM: {type: Number, default: -1},
     nickName: {type: String},
 });

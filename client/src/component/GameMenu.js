@@ -14,6 +14,6 @@ export const GameMenu = () => {
             </button>
         </div>
     );
-}
+};
 
 GameMenu.displayName = "GameMenu";
