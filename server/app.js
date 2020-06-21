@@ -13,7 +13,7 @@ mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser
 });
 
 io.on("connect", (socket) => {
-    socket.on("userInput", async ({userInput, gameId}) => {
+    socket.on("user-input", async ({userInput, gameId}) => {
         try {
             let game = await Game.findById(gameId);
             if (game.isOpen === false && game.isOver === false) {
@@ -23,14 +23,14 @@ io.on("connect", (socket) => {
                     player.currentWordIndex++;
                     if (player.currentWordIndex !== game.words.length) {
                         game = await game.save();
-                        io.to(gameId).emit("updateGame", game);
+                        io.to(gameId).emit("update-game", game);
                     } else {
                         const endTime = new Date().getTime();
                         const {startTime} = game;
                         player.WPM = calculateWPM(startTime, endTime, player);
                         game = await game.save();
                         socket.emit("done");
-                        io.to(gameId).emit("updateGame", game);
+                        io.to(gameId).emit("update-game", game);
                     }
                 }
             }
@@ -49,7 +49,7 @@ io.on("connect", (socket) => {
                 } else {
                     game.isOpen = false;
                     game = await game.save();
-                    io.to(gameId).emit("updateGame", game);
+                    io.to(gameId).emit("update-game", game);
                     await startGameClock(gameId);
                     clearInterval(timerId);
                 }
@@ -71,7 +71,7 @@ io.on("connect", (socket) => {
                 };
                 game.players.push(player);
                 game = await game.save();
-                io.to(gameId).emit("updateGame", game);
+                io.to(gameId).emit("update-game", game);
             }
         } catch (e) {
             console.log(e);
@@ -93,7 +93,7 @@ io.on("connect", (socket) => {
 
             const gameId = game._id.toString();
             socket.join(gameId);
-            io.to(gameId).emit("updateGame", game);
+            io.to(gameId).emit("update-game", game);
         } catch (e) {
             console.log("error");
         }
@@ -125,7 +125,7 @@ const startGameClock = async (gameId) => {
                         }
                     });
                     game = await game.save();
-                    io.to(gameId).emit("updateGame", game);
+                    io.to(gameId).emit("update-game", game);
                     clearInterval(timerId);
                 })();
             }

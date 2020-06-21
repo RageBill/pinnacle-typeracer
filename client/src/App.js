@@ -12,7 +12,7 @@ export const App = () => {
     const [gameState, setGameState] = useState({_id: "", isOpen: false, players: [], words: []});
 
     useEffect(() => {
-        socket.on("updateGame", (game) => {
+        socket.on("update-game", (game) => {
             setGameState(game);
         });
 

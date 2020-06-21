@@ -17,7 +17,7 @@ export const Form = ({isOpen, isOver, gameId}) => {
         const value = e.target.value;
         const lastChar = value.charAt(value.length - 1);
         if (lastChar === " ") {
-            socket.emit("userInput", {userInput, gameId});
+            socket.emit("user-input", {userInput, gameId});
             resetForm();
         } else {
             setUserInput(e.target.value);
