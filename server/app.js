@@ -13,8 +13,32 @@ mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser
 });
 
 io.on("connect", (socket) => {
+    socket.on("userInput", async ({userInput, gameId}) => {
+        try {
+            let game = await Game.findById(gameId);
+            if (game.isOpen === false && game.isOver === false) {
+                let player = game.players.find((player) => player.socketId === socket.id);
+                let word = game.words[player.currentWordIndex];
+                if (word === userInput) {
+                    player.currentWordIndex++;
+                    if (player.currentWordIndex !== game.words.length) {
+                        game = await game.save();
+                        io.to(gameId).emit("updateGame", game);
+                    } else {
+                        const endTime = new Date().getTime();
+                        const {startTime} = game;
+                        player.WPM = calculateWPM(startTime, endTime, player);
+                        game = await game.save();
+                        socket.emit("done");
+                        io.to(gameId).emit("updateGame", game);
+                    }
+                }
+            }
+        } catch (e) {}
+    });
+
     socket.on("timer", async ({gameId, playerId}) => {
-        let countDown = 10; // 10 seconds before start
+        let countDown = 3; // 3 seconds before start
         let game = await Game.findById(gameId);
         let player = game.players.id(playerId);
         if (player.isPartyLeader) {
@@ -80,7 +104,7 @@ const startGameClock = async (gameId) => {
     const game = await Game.findById(gameId);
     game.startTime = new Date().getTime();
     await game.save();
-    let time = 120;
+    let time = 60; // total time for the race
 
     const timerId = setInterval(
         (function gameIntervalFunc() {
