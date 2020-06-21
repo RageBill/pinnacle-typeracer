@@ -1,25 +1,28 @@
 import React from "react";
+import {Table} from "semantic-ui-react";
 
 export const ScoreBoard = ({players}) => {
     const scoreBoard = getScoreBoard(players);
     return (
         scoreBoard.length > 0 && (
-            <table>
-                <thead>
-                    <tr>#</tr>
-                    <tr>Player</tr>
-                    <tr>WPM</tr>
-                </thead>
-                <tbody>
+            <Table celled striped>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>#</Table.HeaderCell>
+                        <Table.HeaderCell>Player</Table.HeaderCell>
+                        <Table.HeaderCell>WPM</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {scoreBoard.map((player, index) => (
-                        <tr>
-                            <th>{index + 1}</th>
-                            <td>{player.nickName}</td>
-                            <td>{player.WPM}</td>
-                        </tr>
+                        <Table.Row>
+                            <Table.Cell>{index + 1}</Table.Cell>
+                            <Table.Cell>{player.nickName}</Table.Cell>
+                            <Table.Cell>{player.WPM}</Table.Cell>
+                        </Table.Row>
                     ))}
-                </tbody>
-            </table>
+                </Table.Body>
+            </Table>
         )
     );
 };
