@@ -6,6 +6,7 @@ import {GameMenu} from "./component/GameMenu";
 import {socket} from "./socketConfig";
 import {CreateGame} from "./component/CreateGame";
 import {JoinGame} from "./component/JoinGame";
+import {TypeRacer} from "./component/TypeRacer";
 
 export const App = () => {
     const [gameState, setGameState] = useState({_id: "", isOpen: false, players: [], words: []});
@@ -32,6 +33,7 @@ export const App = () => {
                 <Route exact path="/" component={GameMenu} />
                 <Route path="/game/create" component={CreateGame} />
                 <Route path="/game/join" component={JoinGame} />
+                <Route path="/game/:gameId" render={() => <TypeRacer gameState={gameState} />} />
             </Switch>
         </Router>
     );

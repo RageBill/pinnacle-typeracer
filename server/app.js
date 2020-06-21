@@ -13,6 +13,28 @@ mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser
 });
 
 io.on("connect", (socket) => {
+    socket.on("timer", async ({gameId, playerId}) => {
+        let countDown = 10; // 10 seconds before start
+        let game = await Game.findById(gameId);
+        let player = game.players.id(playerId);
+        if (player.isPartyLeader) {
+            const timerId = setInterval(async () => {
+                if (countDown >= 0) {
+                    io.to(gameId).emit("timer", {countDown, msg: "Starting game soon..."});
+                    countDown--;
+                } else {
+                    game.isOpen = false;
+                    game = await game.save();
+                    io.to(gameId).emit("updateGame", game);
+                    await startGameClock(gameId);
+                    clearInterval(timerId);
+                }
+            }, 1000);
+        }
+    });
+
+    socket.on("done", async () => {});
+
     socket.on("join-game", async ({gameId, nickName}) => {
         try {
             let game = await Game.findById(gameId);
@@ -53,3 +75,51 @@ io.on("connect", (socket) => {
         }
     });
 });
+
+const startGameClock = async (gameId) => {
+    const game = await Game.findById(gameId);
+    game.startTime = new Date().getTime();
+    await game.save();
+    let time = 120;
+
+    const timerId = setInterval(
+        (function gameIntervalFunc() {
+            const formatTime = calculateTime(time);
+            if (time >= 0) {
+                io.to(gameId).emit("timer", {countDown: formatTime, msg: "Time Remaining"});
+                time--;
+            } else {
+                (async () => {
+                    const endTime = new Date().getTime();
+                    let game = await Game.findById(gameId);
+                    const {startTime} = game;
+                    game.isOver = true;
+                    game.players.forEach((player, index) => {
+                        // calculate WPM for all those who didn't finish the race
+                        if (player.WPM === -1) {
+                            game.players[index].WPM = calculateWPM(startTime, endTime, player);
+                        }
+                    });
+                    game = await game.save();
+                    io.to(gameId).emit("updateGame", game);
+                    clearInterval(timerId);
+                })();
+            }
+            return gameIntervalFunc; // return the function for setInterval to execute
+        })(), // execute the function immediately
+        1000
+    );
+};
+
+const calculateTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+};
+
+const calculateWPM = (startTime, endTime, player) => {
+    const numOfWords = player.currentWordIndex;
+    const timeInSeconds = (endTime - startTime) / 1000;
+    const timeInMinutes = timeInSeconds / 60;
+    return Math.floor(numOfWords / timeInMinutes); // could potentially use 2 decimals
+};
