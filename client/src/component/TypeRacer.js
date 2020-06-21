@@ -6,6 +6,8 @@ import {socket} from "../socketConfig";
 import {DisplayWords} from "./DisplayWords";
 import {Form} from "./Form";
 import {ProgressBar} from "./ProgressBar";
+import {ScoreBoard} from "./ScoreBoard";
+import {DisplayGameCode} from "./DisplayGameCode";
 
 export const TypeRacer = ({gameState}) => {
     const {_id, players, words, isOpen, isOver} = gameState;
@@ -21,6 +23,10 @@ export const TypeRacer = ({gameState}) => {
                 <Form isOpen={isOpen} isOver={isOver} gameId={_id} />
                 <CountDown />
                 <StartButton player={player} gameId={_id} />
+                <ScoreBoard players={players} />
+                <br />
+                <br />
+                <DisplayGameCode gameId={_id} />
             </div>
         );
     }
