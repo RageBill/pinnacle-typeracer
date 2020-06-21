@@ -23,7 +23,7 @@ export const TypeRacer = ({gameState}) => {
                 <Form isOpen={isOpen} isOver={isOver} gameId={_id} />
                 <CountDown />
                 <StartButton player={player} gameId={_id} />
-                <ScoreBoard players={players} />
+                <ScoreBoard players={players} player={player} />
                 <br />
                 <br />
                 <DisplayGameCode gameId={_id} />

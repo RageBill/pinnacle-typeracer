@@ -1,7 +1,7 @@
 import React from "react";
-import {Table} from "semantic-ui-react";
+import {Label, Table} from "semantic-ui-react";
 
-export const ScoreBoard = ({players}) => {
+export const ScoreBoard = ({players, player: myself}) => {
     const scoreBoard = getScoreBoard(players);
     return (
         scoreBoard.length > 0 && (
@@ -17,7 +17,7 @@ export const ScoreBoard = ({players}) => {
                     {scoreBoard.map((player, index) => (
                         <Table.Row>
                             <Table.Cell>{index + 1}</Table.Cell>
-                            <Table.Cell>{player.nickName}</Table.Cell>
+                            <Table.Cell>{player._id === myself._id ? <Label ribbon>You</Label> : player.nickName}</Table.Cell>
                             <Table.Cell>{player.WPM}</Table.Cell>
                         </Table.Row>
                     ))}
