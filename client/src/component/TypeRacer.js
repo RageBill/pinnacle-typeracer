@@ -5,6 +5,7 @@ import {StartButton} from "./StartButton";
 import {socket} from "../socketConfig";
 import {DisplayWords} from "./DisplayWords";
 import {Form} from "./Form";
+import {ProgressBar} from "./ProgressBar";
 
 export const TypeRacer = ({gameState}) => {
     const {_id, players, words, isOpen, isOver} = gameState;
@@ -14,8 +15,9 @@ export const TypeRacer = ({gameState}) => {
         return <Redirect to="/" />;
     } else {
         return (
-            <div>
+            <div className="ui container center aligned">
                 <DisplayWords words={words} player={player} />
+                <ProgressBar players={players} player={player} words={words} />
                 <Form isOpen={isOpen} isOver={isOver} gameId={_id} />
                 <CountDown />
                 <StartButton player={player} gameId={_id} />

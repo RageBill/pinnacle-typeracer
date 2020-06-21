@@ -26,15 +26,11 @@ export const Form = ({isOpen, isOver, gameId}) => {
 
     return (
         <div>
-            <div></div>
-            <div>
-                <form>
-                    <div>
-                        <input type="text" readOnly={isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} />
-                    </div>
-                </form>
-            </div>
-            <div></div>
+            <form>
+                <div>
+                    <input type="text" readOnly={isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} />
+                </div>
+            </form>
         </div>
     );
 };
