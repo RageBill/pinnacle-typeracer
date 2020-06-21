@@ -13,6 +13,25 @@ mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser
 });
 
 io.on("connect", (socket) => {
+    socket.on("join-game", async ({gameId, nickName}) => {
+        try {
+            let game = await Game.findById(gameId);
+            if (game.isOpen) {
+                const gameId = game._id.toString();
+                socket.join(gameId);
+                let player = {
+                    socketId: socket.id,
+                    nickName,
+                };
+                game.players.push(player);
+                game = await game.save();
+                io.to(gameId).emit("updateGame", game);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    });
+
     socket.on("create-game", async (nickName) => {
         try {
             const quotableData = await QuotableAPI();
