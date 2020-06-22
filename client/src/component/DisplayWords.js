@@ -2,7 +2,8 @@ import React from "react";
 import {Header, Segment} from "semantic-ui-react";
 
 const containerStyle = {
-    marginTop: 24,
+    marginTop: 36,
+    marginBottom: 36,
 };
 
 export const DisplayWords = ({words, player}) => {

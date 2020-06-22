@@ -1,27 +1,29 @@
 import React from "react";
-import {Progress} from "semantic-ui-react";
+import {Container, Header, Progress} from "semantic-ui-react";
+
+const SemanticCOLORS = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "grey", "black"];
 
 export const ProgressBar = ({players, player: myself, words}) => {
     const ownProgress = React.useMemo(() => calculatePercentage(myself, words), [myself, words]);
 
     return (
-        <div>
-            <h5>{myself.nickName}</h5>
-            <div key={myself._id}>
-                <Progress percent={ownProgress} indicating precision={2} />
-            </div>
+        <Container textAlign="left">
+            <Header as="h3" color={getRandomColor()}>
+                {`You (${myself.nickName})`}
+            </Header>
+            <Progress percent={ownProgress} indicating precision={2} size="large" />
             {players.map((player) => {
                 const playerProgress = calculatePercentage(player, words);
                 return player._id !== myself._id ? (
                     <>
-                        <h5>{player.nickName}</h5>
-                        <div key={player._id}>
-                            <Progress percent={playerProgress} precision={2} />
-                        </div>
+                        <Header as="h3" color={getRandomColor()}>
+                            {player.nickName}
+                        </Header>
+                        <Progress percent={playerProgress} precision={2} size="large" />
                     </>
                 ) : null;
             })}
-        </div>
+        </Container>
     );
 };
 
@@ -29,4 +31,9 @@ function calculatePercentage(player, words) {
     if (player.currentWordIndex !== 0) {
         return (player.currentWordIndex / words.length) * 100;
     }
+}
+
+function getRandomColor() {
+    const totalColors = SemanticCOLORS.length;
+    return SemanticCOLORS[Math.floor(Math.random() * totalColors)];
 }
