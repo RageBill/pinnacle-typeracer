@@ -8,6 +8,7 @@ import {Form} from "./Form";
 import {ProgressBar} from "./ProgressBar";
 import {ScoreBoard} from "./ScoreBoard";
 import {DisplayGameCode} from "./DisplayGameCode";
+import {Container} from "semantic-ui-react";
 
 export const TypeRacer = ({gameState}) => {
     const {_id, players, words, isOpen, isOver} = gameState;
@@ -17,7 +18,7 @@ export const TypeRacer = ({gameState}) => {
         return <Redirect to="/" />;
     } else {
         return (
-            <div className="ui container center aligned">
+            <Container textAlign="center">
                 <DisplayWords words={words} player={player} />
                 <ProgressBar players={players} player={player} words={words} />
                 <Form isOpen={isOpen} isOver={isOver} gameId={_id} />
@@ -27,7 +28,7 @@ export const TypeRacer = ({gameState}) => {
                 <br />
                 <br />
                 <DisplayGameCode gameId={_id} />
-            </div>
+            </Container>
         );
     }
 };
