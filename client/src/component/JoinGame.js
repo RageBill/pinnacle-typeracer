@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {socket} from "../socketConfig";
+import {Container, Form, Header} from "semantic-ui-react";
 
 export const JoinGame = () => {
     const [userInput, setUserInput] = useState({gameId: "", nickName: ""});
@@ -14,21 +15,25 @@ export const JoinGame = () => {
     const onNickNameInput = (e) => setUserInput({...userInput, nickName: e.target.value});
 
     return (
-        <div className="ui container center aligned">
-            <div>
-                <h1>Join Game</h1>
-                <form onSubmit={onSubmit}>
-                    <label htmlFor="gameId">Enter Game ID:</label>
-                    <input type="text" name="gameId" value={userInput.gameId} onChange={onGameIdInput} placeholder="Enter Game ID" />
-                    <br />
-                    <label htmlFor="nickName">Enter NickName:</label>
-                    <input type="text" name="nickName" value={userInput.nickName} onChange={onNickNameInput} placeholder="Enter NickName" />
-                    <br />
-                    <button type="submit" className="ui primary button">
-                        Submit
-                    </button>
-                </form>
-            </div>
-        </div>
+        <Container textAlign="center">
+            <Header as="h1">Join Game</Header>
+            <Container textAlign="left">
+                <Form onSubmit={onSubmit}>
+                    <Form.Field>
+                        <label htmlFor="gameId">Enter Game ID:</label>
+                        <input type="text" name="gameId" value={userInput.gameId} onChange={onGameIdInput} placeholder="Enter Game ID" />
+                    </Form.Field>
+                    <Form.Field>
+                        <label htmlFor="nickName">Enter NickName:</label>
+                        <input type="text" name="nickName" value={userInput.nickName} onChange={onNickNameInput} placeholder="Enter NickName" />
+                    </Form.Field>
+                    <Container textAlign="center">
+                        <button type="submit" className="ui primary button">
+                            Submit
+                        </button>
+                    </Container>
+                </Form>
+            </Container>
+        </Container>
     );
 };
