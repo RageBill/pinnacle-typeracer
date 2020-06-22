@@ -7,12 +7,15 @@ export const GameMenu = () => {
     return (
         <Container textAlign="center">
             <Header as="h1">Welcome To Pinnacle Typeracer</Header>
-            <Button onClick={() => history.push("/game/create")} primary>
-                Create New Game
-            </Button>
-            <Button onClick={() => history.push("/game/join")} secondary>
-                Join Game
-            </Button>
+            <Button.Group>
+                <Button onClick={() => history.push("/game/create")} primary>
+                    Create New Game
+                </Button>
+                <Button.Or />
+                <Button onClick={() => history.push("/game/join")} secondary>
+                    Join Game
+                </Button>
+            </Button.Group>
         </Container>
     );
 };
