@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {socket} from "../socketConfig";
+import {Button} from "semantic-ui-react";
 
 export const StartButton = ({player, gameId}) => {
     const [showButton, setShowButton] = useState(true);
@@ -12,9 +13,9 @@ export const StartButton = ({player, gameId}) => {
     return (
         player.isPartyLeader &&
         showButton && (
-            <button onClick={onClick} className="ui primary button">
+            <Button onClick={onClick} primary>
                 Start Game
-            </button>
+            </Button>
         )
     );
 };
