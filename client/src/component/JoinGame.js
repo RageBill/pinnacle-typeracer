@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {socket} from "../socketConfig";
-import {Container, Form, Header} from "semantic-ui-react";
+import {Button, Container, Form, Header} from "semantic-ui-react";
 
 export const JoinGame = () => {
     const [userInput, setUserInput] = useState({gameId: "", nickName: ""});
@@ -28,9 +28,9 @@ export const JoinGame = () => {
                         <input type="text" name="nickName" value={userInput.nickName} onChange={onNickNameInput} placeholder="Enter NickName" />
                     </Form.Field>
                     <Container textAlign="center">
-                        <button type="submit" className="ui primary button">
+                        <Button type="submit" primary disabled={userInput.gameId === "" || userInput.nickName === ""}>
                             Submit
-                        </button>
+                        </Button>
                     </Container>
                 </Form>
             </Container>
