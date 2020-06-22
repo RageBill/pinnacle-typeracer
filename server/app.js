@@ -34,7 +34,9 @@ io.on("connect", (socket) => {
                     }
                 }
             }
-        } catch (e) {}
+        } catch (e) {
+            //
+        }
     });
 
     socket.on("timer", async ({gameId, playerId}) => {

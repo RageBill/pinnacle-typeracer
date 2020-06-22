@@ -6,4 +6,6 @@ const axios = require("axios");
 
 const uri = "http://api.quotable.io/random";
 
-module.exports = getData = () => axios.get(uri).then((response) => response.data.content.split(" "));
+const getData = () => axios.get(uri).then((response) => response.data.content.split(" "));
+
+module.exports = getData;
