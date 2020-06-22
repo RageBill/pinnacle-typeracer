@@ -9,31 +9,25 @@ const containerStyle = {
 export const DisplayWords = ({words, player}) => {
     return (
         <Segment style={containerStyle}>
-            {getTypedWords(words, player)}
-            {getCurrentWord(words, player)}
-            {getWordsToBeTyped(words, player)}
+            <Header as="span" color="green">
+                {getTypedWords(words, player)}
+            </Header>
+            <Header as="span" color="blue" dividing>
+                {getCurrentWord(words, player)}
+            </Header>
+            <Header as="span">{getWordsToBeTyped(words, player)}</Header>
         </Segment>
     );
 };
 
 function getTypedWords(words, player) {
-    const typedWords = words.slice(0, player.currentWordIndex).join(" ");
-    return (
-        <Header as="span" color="green">
-            {typedWords}{" "}
-        </Header>
-    );
+    return words.slice(0, player.currentWordIndex).join(" ") + " ";
 }
 
-function getCurrentWord(words, player) {
-    return (
-        <Header as="span" color="blue" dividing>
-            {words[player.currentWordIndex]}{" "}
-        </Header>
-    );
+export function getCurrentWord(words, player) {
+    return words[player.currentWordIndex] + " ";
 }
 
 function getWordsToBeTyped(words, player) {
-    const wordsToBeTyped = words.slice(player.currentWordIndex + 1, words.length).join(" ");
-    return <Header as="span">{wordsToBeTyped}</Header>;
+    return words.slice(player.currentWordIndex + 1, words.length).join(" ");
 }

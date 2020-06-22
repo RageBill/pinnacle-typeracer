@@ -1,8 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
 import {socket} from "../socketConfig";
 import {Input} from "semantic-ui-react";
+import {getCurrentWord} from "./DisplayWords";
 
-export const Form = ({isOpen, isOver, gameId}) => {
+export const Form = ({isOpen, isOver, gameId, words, player}) => {
     const [userInput, setUserInput] = useState("");
     const textInput = useRef(null);
 
@@ -25,5 +26,5 @@ export const Form = ({isOpen, isOver, gameId}) => {
         }
     };
 
-    return <Input fluid type="text" readOnly={isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} />;
+    return <Input fluid type="text" readOnly={isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} placeholder={getCurrentWord(words, player)} />;
 };
