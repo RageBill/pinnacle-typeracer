@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {socket} from "../socketConfig";
+import {Input} from "semantic-ui-react";
 
 export const Form = ({isOpen, isOver, gameId}) => {
     const [userInput, setUserInput] = useState("");
@@ -24,13 +25,5 @@ export const Form = ({isOpen, isOver, gameId}) => {
         }
     };
 
-    return (
-        <div>
-            <form>
-                <div>
-                    <input type="text" readOnly={isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} />
-                </div>
-            </form>
-        </div>
-    );
+    return <Input fluid type="text" readOnly={isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} />;
 };
