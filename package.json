@@ -4,8 +4,9 @@
     "description": "",
     "main": "server/app.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "format": "prettier --config ./prettier.json --write ./**/*.{js,json} && prettier --config ./prettier.json --write ./**/**/*.{js,json} && prettier --config ./prettier.json --write ./**/**/**/*.{js,json}"
+        "format": "prettier --write \"**/*.{js,json}\"",
+        "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
         "type": "git",
@@ -24,5 +25,8 @@
         "mongoose": "5.9.19",
         "prettier": "2.0.5",
         "socket.io": "2.3.0"
+    },
+    "devDependencies": {
+        "eslint": "^7.3.0"
     }
 }
