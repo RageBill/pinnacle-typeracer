@@ -4,8 +4,8 @@
     "description": "",
     "main": "server/app.js",
     "scripts": {
-        "format": "prettier --write \"**/*.{js,json}\"",
-        "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
+        "format": "prettier --write --ignore-path ../.gitignore \"**/*.{js,json}\"",
+        "lint": "eslint --ext .js,.ts --ignore-path ../.gitignore .",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
