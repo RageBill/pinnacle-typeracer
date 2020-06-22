@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const Game = require("./Models/Game");
 const QuotableAPI = require("./QuotableAPI");
 
+app.use("/", express.static("../client/build"));
+
 const expressServer = app.listen(3001);
 const io = socketio(expressServer);
 
