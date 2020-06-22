@@ -22,6 +22,7 @@
 **/*.log*
 
 # editors
-.idea
-.vscode
 *.iml
+.idea
+.vscode/**
+!.vscode/extensions.json
