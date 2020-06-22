@@ -4,6 +4,7 @@
     "description": "",
     "main": "server/app.js",
     "scripts": {
+        "dev": "nodemon src/app.js",
         "format": "prettier --write --ignore-path ../.gitignore \"**/*.{js,json}\"",
         "lint": "eslint --ext .js,.ts --ignore-path ../.gitignore .",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,12 +22,14 @@
     "homepage": "https://github.com/RageBill/pinnacle-typeracer#readme",
     "dependencies": {
         "axios": "0.19.2",
+        "dotenv": "^8.2.0",
         "express": "4.17.1",
         "mongoose": "5.9.19",
         "prettier": "2.0.5",
         "socket.io": "2.3.0"
     },
     "devDependencies": {
-        "eslint": "7.3.0"
+        "eslint": "7.3.0",
+        "nodemon": "2.0.4"
     }
 }

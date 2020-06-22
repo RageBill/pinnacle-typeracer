@@ -1,0 +1,52 @@
+# For development use
+---
+version: "3"
+
+services:
+    react_dev_server:
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        env_file: [./client/.env]
+        container_name: react_dev_server
+        restart: always
+        command: yarn run start
+        ports: [3000:3000]
+        networks: [default_network]
+        volumes:
+            - ./client/:/usr/app/
+            - client_node_modules:/usr/app/node_modules
+
+    express_server:
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        env_file: [./server/.env]
+        container_name: express_server
+        restart: always
+        command: yarn run dev
+        volumes:
+            - ./server/:/usr/app/
+            - server_node_modules:/usr/app/node_modules
+        ports: [3001:3001]
+        networks: [default_network]
+        links: [mongo_datastore:mongo_datastore]
+        depends_on: [mongo_datastore]
+
+    mongo_datastore:
+        image: mongo:3.6-xenial
+        container_name: mongo_datastore
+        restart: always
+        command: --noprealloc --smallfiles
+        volumes:
+            - mongo_datastore_data:/data/db
+        ports: [27017:27017]
+
+networks:
+    default_network:
+        driver: bridge
+
+volumes:
+    mongo_datastore_data:
+    client_node_modules:
+    server_node_modules:

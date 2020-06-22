@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const socketio = require("socket.io");
@@ -7,11 +8,15 @@ const QuotableAPI = require("./QuotableAPI");
 
 app.use("/", express.static("../client/build"));
 
-const expressServer = app.listen(3001);
+const PORT = parseInt(process.env.PORT, 10);
+const expressServer = app.listen(PORT, () => {
+    console.log(`express server started at PORT[${PORT}]`);
+});
 const io = socketio(expressServer);
 
-mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser: true, useUnifiedTopology: true}, () => {
-    console.log("successfully connected to database");
+const {MONGO_URI} = process.env;
+mongoose.connect(`${MONGO_URI}/pinnacleTyperacer`, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
+    console.log(`mongo database connected at MONGOURI[${MONGO_URI}]`);
 });
 
 io.on("connect", (socket) => {
