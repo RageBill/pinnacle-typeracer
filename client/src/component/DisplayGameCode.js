@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {Message} from "semantic-ui-react";
+import {Button, Container, Header, Input, Message} from "semantic-ui-react";
 
 export const DisplayGameCode = ({gameId}) => {
     const [copySuccess, setCopySuccess] = useState(false);
@@ -12,17 +12,17 @@ export const DisplayGameCode = ({gameId}) => {
     };
 
     return (
-        <div>
-            <h4>Send this code to your friends to join:</h4>
-            <input type="text" readOnly value={gameId} ref={textInputRef} />
-            <button className="ui secondary button" onClick={copyToClipboard}>
+        <Container text textAlign="center">
+            <Header as="h4">Send this code to your friends to join:</Header>
+            <Input type="text" readOnly value={gameId} ref={textInputRef} />
+            <Button secondary onClick={copyToClipboard}>
                 Copy Code
-            </button>
+            </Button>
             {copySuccess && (
                 <Message positive>
                     <Message.Header>Code Copied To Clipboard.</Message.Header>
                 </Message>
             )}
-        </div>
+        </Container>
     );
 };
