@@ -8,7 +8,7 @@ export const ProgressBar = ({players, player: myself, words}) => {
 
     return (
         <Container textAlign="left">
-            <Header as="h3" color={getRandomColor()}>
+            <Header as="h3" color={getRandomColor()} style={{position: "relative", left: `${ownProgress}%`, transition: "left"}}>
                 {`You (${myself.nickName})`}
             </Header>
             <Progress percent={ownProgress} indicating precision={2} size="large" />
