@@ -16,7 +16,7 @@ export const ProgressBar = ({players, player: myself, words}) => {
                 const playerProgress = calculatePercentage(player, words);
                 return player._id !== myself._id ? (
                     <>
-                        <Header as="h3" color={getRandomColor()}>
+                        <Header as="h3" color={getRandomColor()} style={{position: "relative", left: `${playerProgress}%`, transition: "left"}}>
                             {player.nickName}
                         </Header>
                         <Progress percent={playerProgress} precision={2} size="large" />
