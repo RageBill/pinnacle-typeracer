@@ -8,6 +8,8 @@ services:
             context: ./client
             dockerfile: Dockerfile
         env_file: [./client/.env]
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
         container_name: react_dev_server
         restart: always
         command: yarn run start
