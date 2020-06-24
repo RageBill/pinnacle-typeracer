@@ -15,6 +15,26 @@ mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser
 });
 
 io.on("connect", (socket) => {
+    socket.on("restart-game", async (gameId) => {
+        try {
+            let game = await Game.findById(gameId);
+            if (game.isOpen === false && game.isOver) {
+                const quotableData = await QuotableAPI();
+                game.words = quotableData;
+                game.isOpen = true;
+                game.isOver = false;
+                game.players.forEach((player) => {
+                    player.currentWordIndex = 0;
+                    player.WPM = -1;
+                });
+                game = await game.save();
+                io.to(gameId).emit("update-game", game);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    });
+
     socket.on("user-input", async ({userInput, gameId}) => {
         try {
             let game = await Game.findById(gameId);
@@ -31,13 +51,21 @@ io.on("connect", (socket) => {
                         const {startTime} = game;
                         player.WPM = calculateWPM(startTime, endTime, player);
                         game = await game.save();
-                        socket.emit("done");
+                        socket.emit("done", gameId);
+
+                        if (game.isOpen === false && game.isOver === false) {
+                            if (game.players.every((player) => player.WPM >= 0)) {
+                                game.isOver = true;
+                            }
+                            game = await game.save();
+                        }
+
                         io.to(gameId).emit("update-game", game);
                     }
                 }
             }
         } catch (e) {
-            //
+            console.log(e);
         }
     });
 
@@ -60,8 +88,6 @@ io.on("connect", (socket) => {
             }, 1000);
         }
     });
-
-    socket.on("done", async () => {});
 
     socket.on("join-game", async ({gameId, nickName}) => {
         try {
@@ -99,7 +125,7 @@ io.on("connect", (socket) => {
             socket.join(gameId);
             io.to(gameId).emit("update-game", game);
         } catch (e) {
-            console.log("error");
+            console.log(e);
         }
     });
 });

@@ -9,6 +9,7 @@ import {ProgressBar} from "./ProgressBar";
 import {ScoreBoard} from "./ScoreBoard";
 import {DisplayGameCode} from "./DisplayGameCode";
 import {Container} from "semantic-ui-react";
+import {NewGameButton} from "./NewGameButton";
 
 export const TypeRacer = ({gameState}) => {
     const {_id, players, words, isOpen, isOver} = gameState;
@@ -22,8 +23,9 @@ export const TypeRacer = ({gameState}) => {
                 <DisplayWords words={words} player={player} />
                 <ProgressBar players={players} player={player} words={words} />
                 <Form isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
-                <CountDown />
+                <CountDown isOpen={isOpen} />
                 <StartButton player={player} gameId={_id} />
+                <NewGameButton player={player} isOpen={isOpen} isOver={isOver} gameId={_id} />
                 <ScoreBoard players={players} player={player} />
                 <br />
                 <br />
