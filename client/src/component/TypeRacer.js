@@ -21,9 +21,9 @@ export const TypeRacer = ({gameState}) => {
         return (
             <Container textAlign="center">
                 <DisplayWords words={words} player={player} />
-                <ProgressBar players={players} player={player} words={words} />
                 <Form isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
                 <CountDown isOpen={isOpen} />
+                <ProgressBar players={players} player={player} words={words} />
                 <StartButton player={player} gameId={_id} />
                 <NewGameButton player={player} isOpen={isOpen} isOver={isOver} gameId={_id} />
                 <ScoreBoard players={players} player={player} />
