@@ -5,6 +5,7 @@
     "main": "server/app.js",
     "scripts": {
         "format": "prettier --write --ignore-path ../.gitignore \"**/*.{js,json}\"",
+        "check": "tsc -p ./tsconfig.json",
         "lint": "eslint --ext .js,.ts --ignore-path ../.gitignore .",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -23,10 +24,14 @@
         "axios": "0.19.2",
         "express": "4.17.1",
         "mongoose": "5.9.19",
-        "prettier": "2.0.5",
         "socket.io": "2.3.0"
     },
     "devDependencies": {
-        "eslint": "7.3.0"
+        "@types/axios": "0.14.0",
+        "@types/express": "4.17.6",
+        "@types/socket.io": "2.1.8",
+        "eslint": "7.3.0",
+        "prettier": "2.0.5",
+        "typescript": "3.9.5"
     }
 }
