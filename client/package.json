@@ -32,6 +32,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
+        "check": "tsc -p ./tsconfig.json",
         "eject": "react-scripts eject",
         "format": "prettier --write --ignore-path ../.gitignore \"**/*.{js,json}\""
     },
