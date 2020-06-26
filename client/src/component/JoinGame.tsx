@@ -1,18 +1,24 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import {socket} from "../socketConfig";
 import {Button, Container, Form, Header} from "semantic-ui-react";
+import {Game, Player} from "../type";
+
+type UserInput = {
+    gameId: Game["_id"];
+    nickName: Player["nickName"];
+};
 
 export const JoinGame = () => {
-    const [userInput, setUserInput] = useState({gameId: "", nickName: ""});
+    const [userInput, setUserInput] = useState<UserInput>({gameId: "", nickName: ""});
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         socket.emit("join-game", userInput);
     };
 
-    const onGameIdInput = (e) => setUserInput({...userInput, gameId: e.target.value});
+    const onGameIdInput = (e: ChangeEvent<HTMLInputElement>) => setUserInput({...userInput, gameId: e.target.value});
 
-    const onNickNameInput = (e) => setUserInput({...userInput, nickName: e.target.value});
+    const onNickNameInput = (e: ChangeEvent<HTMLInputElement>) => setUserInput({...userInput, nickName: e.target.value});
 
     return (
         <Container textAlign="center">

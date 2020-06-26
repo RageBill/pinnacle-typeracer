@@ -10,15 +10,16 @@ import {ScoreBoard} from "./ScoreBoard";
 import {DisplayGameCode} from "./DisplayGameCode";
 import {Container} from "semantic-ui-react";
 import {NewGameButton} from "./NewGameButton";
+import {Game} from "../type";
 
-export const TypeRacer = ({gameState}) => {
+export const TypeRacer = ({gameState}: {gameState: Game}) => {
     const {_id, players, words, isOpen, isOver} = gameState;
     const player = players.find((player) => player.socketId === socket.id);
 
     if (_id === "") {
         return <Redirect to="/" />;
     } else {
-        return (
+        return player ? (
             <Container textAlign="center">
                 <DisplayWords words={words} player={player} />
                 <Form isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
@@ -31,6 +32,8 @@ export const TypeRacer = ({gameState}) => {
                 <br />
                 <DisplayGameCode gameId={_id} />
             </Container>
+        ) : (
+            <div />
         );
     }
 };

@@ -1,21 +1,22 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import {socket} from "../socketConfig";
 import {Input} from "semantic-ui-react";
 import {getCurrentWord} from "./DisplayWords";
+import {Game, Player} from "../type";
 
-export const Form = ({isOpen, isOver, gameId, words, player}) => {
+export const Form = ({isOpen, isOver, gameId, words, player}: {isOpen: Game["isOpen"]; isOver: Game["isOver"]; gameId: Game["_id"]; words: Game["words"]; player: Player}) => {
     const [userInput, setUserInput] = useState("");
-    const textInput = useRef(null);
+    const textInput = useRef<Input>(null);
 
     useEffect(() => {
-        if (isOpen === false) {
-            textInput.current.focus(); // user can immediate start typing once the game start
+        if (!isOpen) {
+            textInput.current?.focus(); // user can immediate start typing once the game start
         }
     }, [isOpen]);
 
     const resetForm = () => setUserInput("");
 
-    const onUserInput = (e) => {
+    const onUserInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         const lastChar = value.charAt(value.length - 1);
         if (lastChar === " ") {

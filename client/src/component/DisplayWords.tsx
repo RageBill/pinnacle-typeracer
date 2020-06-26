@@ -1,12 +1,13 @@
 import React from "react";
 import {Header, Segment} from "semantic-ui-react";
+import {Game, Player} from "../type";
 
 const containerStyle = {
     marginTop: 36,
     marginBottom: 36,
 };
 
-export const DisplayWords = ({words, player}) => {
+export const DisplayWords = ({words, player}: {words: Game["words"]; player: Player}) => {
     const typedWords = getTypedWords(words, player);
     const currentWord = getCurrentWord(words, player);
     const wordsToBeTyped = getWordsToBeTyped(words, player);
@@ -27,14 +28,14 @@ export const DisplayWords = ({words, player}) => {
     );
 };
 
-function getTypedWords(words, player) {
+function getTypedWords(words: Game["words"], player: Player): string {
     return words.slice(0, player.currentWordIndex).join(" ") + " ";
 }
 
-export function getCurrentWord(words, player) {
+export function getCurrentWord(words: Game["words"], player: Player): string {
     return player.currentWordIndex < words.length ? words[player.currentWordIndex] + " " : "";
 }
 
-function getWordsToBeTyped(words, player) {
+function getWordsToBeTyped(words: Game["words"], player: Player): string {
     return words.slice(player.currentWordIndex + 1, words.length).join(" ");
 }

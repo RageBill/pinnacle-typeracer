@@ -7,12 +7,13 @@ import {socket} from "./socketConfig";
 import {CreateGame} from "./component/CreateGame";
 import {JoinGame} from "./component/JoinGame";
 import {TypeRacer} from "./component/TypeRacer";
+import {Game} from "./type";
 
 export const App = () => {
-    const [gameState, setGameState] = useState({_id: "", isOpen: false, players: [], words: []});
+    const [gameState, setGameState] = useState<Game>({_id: "", isOpen: false, isOver: false, players: [], words: [], startTime: 0});
 
     useEffect(() => {
-        socket.on("update-game", (game) => {
+        socket.on("update-game", (game: Game) => {
             setGameState(game);
         });
 
