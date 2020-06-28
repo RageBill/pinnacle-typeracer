@@ -3,6 +3,7 @@ import {Button} from "semantic-ui-react";
 import {socket} from "../socketConfig";
 import {Game, Player, SocketSentEventView} from "../type";
 
+// TODO: not functioning as expected
 export const NewGameButton = ({player, isOpen, isOver, gameId}: {player: Player; isOpen: Game["isOpen"]; isOver: Game["isOver"]; gameId: Game["_id"]}) => {
     const [showButton, setShowButton] = useState(false);
 
