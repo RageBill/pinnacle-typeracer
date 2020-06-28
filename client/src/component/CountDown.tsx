@@ -2,7 +2,11 @@ import React, {useEffect, useState} from "react";
 import {socket} from "../socketConfig";
 import {Game, SocketReceivedEventData, SocketReceivedEventView} from "../type";
 
-export const CountDown = ({isOpen}: {isOpen: Game["isOpen"]}) => {
+interface Props {
+    isOpen: Game["isOpen"];
+}
+
+export const CountDown = ({isOpen}: Props) => {
     const [timer, setTimer] = useState<SocketReceivedEventData[SocketReceivedEventView.TIMER]>({countDown: "", msg: ""});
 
     useEffect(() => {
@@ -27,3 +31,5 @@ export const CountDown = ({isOpen}: {isOpen: Game["isOpen"]}) => {
         </>
     );
 };
+
+CountDown.displayName = "CountDown";

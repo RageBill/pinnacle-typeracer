@@ -4,7 +4,7 @@ import {CountDown} from "./CountDown";
 import {StartButton} from "./StartButton";
 import {socket} from "../socketConfig";
 import {DisplayWords} from "./DisplayWords";
-import {Form} from "./Form";
+import {PlayerInputForm} from "./PlayerInputForm";
 import {ProgressBar} from "./ProgressBar";
 import {ScoreBoard} from "./ScoreBoard";
 import {DisplayGameCode} from "./DisplayGameCode";
@@ -12,7 +12,11 @@ import {Container, Header} from "semantic-ui-react";
 import {NewGameButton} from "./NewGameButton";
 import {Game} from "../type";
 
-export const TypeRacer = ({gameState}: {gameState: Game}) => {
+interface Props {
+    gameState: Game;
+}
+
+export const TypeRacer = ({gameState}: Props) => {
     const {_id, players, words, isOpen, isOver} = gameState;
     const player = players.find((player) => player.socketId === socket.id());
 
@@ -22,7 +26,7 @@ export const TypeRacer = ({gameState}: {gameState: Game}) => {
         return player ? (
             <Container textAlign="center">
                 <DisplayWords words={words} player={player} />
-                <Form isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
+                <PlayerInputForm isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
                 <CountDown isOpen={isOpen} />
                 <ProgressBar players={players} player={player} words={words} />
                 <StartButton player={player} gameId={_id} />
@@ -39,3 +43,5 @@ export const TypeRacer = ({gameState}: {gameState: Game}) => {
         );
     }
 };
+
+TypeRacer.displayName = "TypeRacer";

@@ -43,3 +43,5 @@ export const JoinGame = () => {
         </Container>
     );
 };
+
+JoinGame.displayName = "JoinGame";

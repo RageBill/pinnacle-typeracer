@@ -2,7 +2,12 @@ import React from "react";
 import {Label, Table} from "semantic-ui-react";
 import {Game, Player} from "../type";
 
-export const ScoreBoard = ({players, player: myself}: {players: Game["players"]; player: Player}) => {
+interface Props {
+    players: Game["players"];
+    player: Player;
+}
+
+export const ScoreBoard = ({players, player: myself}: Props) => {
     const scoreBoard = getScoreBoard(players);
     return scoreBoard.length > 0 ? (
         <Table celled striped>
@@ -27,6 +32,8 @@ export const ScoreBoard = ({players, player: myself}: {players: Game["players"];
         <div />
     );
 };
+
+ScoreBoard.displayName = "ScoreBoard";
 
 function getScoreBoard(players: Game["players"]) {
     const scoreBoard = players.filter((player) => player.WPM !== -1);

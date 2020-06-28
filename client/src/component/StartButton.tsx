@@ -3,7 +3,12 @@ import {socket} from "../socketConfig";
 import {Button} from "semantic-ui-react";
 import {Game, Player, SocketSentEventView} from "../type";
 
-export const StartButton = ({player, gameId}: {player: Player; gameId: Game["_id"]}) => {
+interface Props {
+    player: Player;
+    gameId: Game["_id"];
+}
+
+export const StartButton = ({player, gameId}: Props) => {
     const [showButton, setShowButton] = useState(true);
 
     const onClick = () => {
@@ -19,3 +24,5 @@ export const StartButton = ({player, gameId}: {player: Player; gameId: Game["_id
         <div />
     );
 };
+
+StartButton.displayName = "StartButton";

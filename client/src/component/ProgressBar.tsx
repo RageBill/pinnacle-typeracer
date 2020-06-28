@@ -4,7 +4,13 @@ import {Game, Player} from "../type";
 
 const semanticColors: SemanticCOLORS[] = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "grey", "black"];
 
-export const ProgressBar = ({players, player: myself, words}: {players: Game["players"]; player: Player; words: Game["words"]}) => {
+interface Props {
+    players: Game["players"];
+    player: Player;
+    words: Game["words"];
+}
+
+export const ProgressBar = ({players, player: myself, words}: Props) => {
     const ownProgress = React.useMemo(() => calculatePercentage(myself, words), [myself, words]);
 
     return (
@@ -27,6 +33,8 @@ export const ProgressBar = ({players, player: myself, words}: {players: Game["pl
         </Container>
     );
 };
+
+ProgressBar.displayName = "ProgressBar";
 
 function calculatePercentage(player: Player, words: Game["words"]) {
     if (player.currentWordIndex !== 0) {

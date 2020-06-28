@@ -4,7 +4,15 @@ import {Input} from "semantic-ui-react";
 import {getCurrentWord} from "./DisplayWords";
 import {Game, Player, SocketSentEventView} from "../type";
 
-export const Form = ({isOpen, isOver, gameId, words, player}: {isOpen: Game["isOpen"]; isOver: Game["isOver"]; gameId: Game["_id"]; words: Game["words"]; player: Player}) => {
+interface Props {
+    isOpen: Game["isOpen"];
+    isOver: Game["isOver"];
+    gameId: Game["_id"];
+    words: Game["words"];
+    player: Player;
+}
+
+export const PlayerInputForm = ({isOpen, isOver, gameId, words, player}: Props) => {
     const [userInput, setUserInput] = useState("");
     const textInput = useRef<Input>(null);
 
@@ -29,3 +37,5 @@ export const Form = ({isOpen, isOver, gameId, words, player}: {isOpen: Game["isO
 
     return <Input fluid type="text" readOnly={isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} placeholder={getCurrentWord(words, player)} />;
 };
+
+PlayerInputForm.displayName = "PlayerInputForm";

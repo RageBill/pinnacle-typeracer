@@ -32,3 +32,5 @@ export const CreateGame = () => {
         </Container>
     );
 };
+
+CreateGame.displayName = "CreateGame";

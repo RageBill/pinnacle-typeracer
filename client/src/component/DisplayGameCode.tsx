@@ -2,7 +2,11 @@ import React, {useRef, useState} from "react";
 import {Button, Container, Header, Input, Message} from "semantic-ui-react";
 import {Game} from "../type";
 
-export const DisplayGameCode = ({gameId}: {gameId: Game["_id"]}) => {
+interface Props {
+    gameId: Game["_id"];
+}
+
+export const DisplayGameCode = ({gameId}: Props) => {
     const [copySuccess, setCopySuccess] = useState(false);
     const textInputRef = useRef<Input>(null);
 
@@ -27,3 +31,5 @@ export const DisplayGameCode = ({gameId}: {gameId: Game["_id"]}) => {
         </Container>
     );
 };
+
+DisplayGameCode.displayName = "DisplayGameCode";

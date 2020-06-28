@@ -3,8 +3,15 @@ import {Button} from "semantic-ui-react";
 import {socket} from "../socketConfig";
 import {Game, Player, SocketSentEventView} from "../type";
 
+interface Props {
+    player: Player;
+    isOpen: Game["isOpen"];
+    isOver: Game["isOver"];
+    gameId: Game["_id"];
+}
+
 // TODO: not functioning as expected
-export const NewGameButton = ({player, isOpen, isOver, gameId}: {player: Player; isOpen: Game["isOpen"]; isOver: Game["isOver"]; gameId: Game["_id"]}) => {
+export const NewGameButton = ({player, isOpen, isOver, gameId}: Props) => {
     const [showButton, setShowButton] = useState(false);
 
     useEffect(() => {
@@ -26,3 +33,5 @@ export const NewGameButton = ({player, isOpen, isOver, gameId}: {player: Player;
         <div />
     );
 };
+
+NewGameButton.displayName = "NewGameButton";
