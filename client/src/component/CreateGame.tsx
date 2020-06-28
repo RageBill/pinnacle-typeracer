@@ -1,14 +1,14 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
 import {socket} from "../socketConfig";
 import {Button, Container, Form, Header} from "semantic-ui-react";
-import {Player} from "../type";
+import {Player, SocketSentEventView} from "../type";
 
 export const CreateGame = () => {
     const [nickName, setNickName] = useState<Player["nickName"]>("");
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        socket.emit("create-game", nickName);
+        socket.emit(SocketSentEventView.CREATE_GAME, {nickName});
     };
 
     const onNickNameInput = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);

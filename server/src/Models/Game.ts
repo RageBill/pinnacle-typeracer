@@ -22,3 +22,5 @@ export const GameSchema = createSchema({
 export const Game = typedModel("Game", GameSchema);
 
 export type PlayerProps = ExtractProps<typeof PlayerSchema>;
+
+export type GameProps = ExtractProps<typeof GameSchema>;

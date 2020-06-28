@@ -2,7 +2,7 @@ import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import {socket} from "../socketConfig";
 import {Input} from "semantic-ui-react";
 import {getCurrentWord} from "./DisplayWords";
-import {Game, Player} from "../type";
+import {Game, Player, SocketSentEventView} from "../type";
 
 export const Form = ({isOpen, isOver, gameId, words, player}: {isOpen: Game["isOpen"]; isOver: Game["isOver"]; gameId: Game["_id"]; words: Game["words"]; player: Player}) => {
     const [userInput, setUserInput] = useState("");
@@ -20,7 +20,7 @@ export const Form = ({isOpen, isOver, gameId, words, player}: {isOpen: Game["isO
         const value = e.target.value;
         const lastChar = value.charAt(value.length - 1);
         if (lastChar === " ") {
-            socket.emit("user-input", {userInput, gameId});
+            socket.emit(SocketSentEventView.USER_INPUT, {userInput, gameId});
             resetForm();
         } else {
             setUserInput(e.target.value);

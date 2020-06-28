@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
 import {socket} from "../socketConfig";
 import {Button, Container, Form, Header} from "semantic-ui-react";
-import {Game, Player} from "../type";
+import {Game, Player, SocketSentEventView} from "../type";
 
 type UserInput = {
     gameId: Game["_id"];
@@ -13,7 +13,7 @@ export const JoinGame = () => {
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        socket.emit("join-game", userInput);
+        socket.emit(SocketSentEventView.JOIN_GAME, userInput);
     };
 
     const onGameIdInput = (e: ChangeEvent<HTMLInputElement>) => setUserInput({...userInput, gameId: e.target.value});

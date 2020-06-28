@@ -8,13 +8,13 @@ import {Form} from "./Form";
 import {ProgressBar} from "./ProgressBar";
 import {ScoreBoard} from "./ScoreBoard";
 import {DisplayGameCode} from "./DisplayGameCode";
-import {Container} from "semantic-ui-react";
+import {Container, Header} from "semantic-ui-react";
 import {NewGameButton} from "./NewGameButton";
 import {Game} from "../type";
 
 export const TypeRacer = ({gameState}: {gameState: Game}) => {
     const {_id, players, words, isOpen, isOver} = gameState;
-    const player = players.find((player) => player.socketId === socket.id);
+    const player = players.find((player) => player.socketId === socket.id());
 
     if (_id === "") {
         return <Redirect to="/" />;
@@ -33,7 +33,9 @@ export const TypeRacer = ({gameState}: {gameState: Game}) => {
                 <DisplayGameCode gameId={_id} />
             </Container>
         ) : (
-            <div />
+            <Header as="h1" color="red">
+                Player not found.
+            </Header>
         );
     }
 };

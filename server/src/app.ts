@@ -3,6 +3,7 @@ import socketio from "socket.io";
 import mongoose from "mongoose";
 import {getQuotableAPIData} from "./QuotableAPI";
 import {Game, PlayerProps} from "./Models/Game";
+import {SocketReceivedEventData, SocketReceivedEventView, SocketSentEventView} from "./type";
 
 const app = express();
 
@@ -16,7 +17,7 @@ mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser
 });
 
 io.on("connect", (socket) => {
-    socket.on("restart-game", async (gameId) => {
+    socket.on(SocketReceivedEventView.RESTART_GAME, async ({gameId}: SocketReceivedEventData[SocketReceivedEventView.RESTART_GAME]) => {
         try {
             let game = await Game.findById(gameId);
             if (game && game.isOpen === false && game.isOver) {
@@ -29,14 +30,14 @@ io.on("connect", (socket) => {
                     player.WPM = -1;
                 });
                 game = await game.save();
-                io.to(gameId).emit("update-game", game);
+                io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
             }
         } catch (e) {
             console.error(e);
         }
     });
 
-    socket.on("user-input", async ({userInput, gameId}) => {
+    socket.on(SocketReceivedEventView.USER_INPUT, async ({userInput, gameId}: SocketReceivedEventData[SocketReceivedEventView.USER_INPUT]) => {
         try {
             let game = await Game.findById(gameId);
             if (game && game.isOpen === false && game.isOver === false) {
@@ -47,13 +48,13 @@ io.on("connect", (socket) => {
                         player.currentWordIndex++;
                         if (player.currentWordIndex !== game.words.length) {
                             game = await game.save();
-                            io.to(gameId).emit("update-game", game);
+                            io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
                         } else {
                             const endTime = new Date().getTime();
                             const {startTime} = game;
                             player.WPM = calculateWPM(startTime!, endTime, player);
                             game = await game.save();
-                            socket.emit("done", gameId);
+                            socket.emit(SocketSentEventView.DONE, {gameId});
 
                             if (game.isOpen === false && game.isOver === false) {
                                 if (game.players.every((player: PlayerProps) => player.WPM >= 0)) {
@@ -62,7 +63,7 @@ io.on("connect", (socket) => {
                                 game = await game.save();
                             }
 
-                            io.to(gameId).emit("update-game", game);
+                            io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
                         }
                     }
                 }
@@ -72,20 +73,20 @@ io.on("connect", (socket) => {
         }
     });
 
-    socket.on("timer", async ({gameId, playerId}) => {
+    socket.on(SocketReceivedEventView.TIMER, async ({gameId, playerId}: SocketReceivedEventData[SocketReceivedEventView.TIMER]) => {
         let countDown = 3; // 3 seconds before start
         let game = await Game.findById(gameId);
         const player = game?.players.id(playerId);
         if (player && player.isPartyLeader) {
             const timerId = setInterval(async () => {
                 if (countDown >= 0) {
-                    io.to(gameId).emit("timer", {countDown, msg: "Starting game soon..."});
+                    io.to(gameId).emit(SocketSentEventView.TIMER, {countDown, msg: "Starting game soon..."});
                     countDown--;
                 } else {
                     if (game) {
                         game.isOpen = false;
                         game = await game.save();
-                        io.to(gameId).emit("update-game", game);
+                        io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
                     }
                     await startGameClock(gameId);
                     clearInterval(timerId);
@@ -94,7 +95,7 @@ io.on("connect", (socket) => {
         }
     });
 
-    socket.on("join-game", async ({gameId, nickName}) => {
+    socket.on(SocketReceivedEventView.JOIN_GAME, async ({gameId, nickName}: SocketReceivedEventData[SocketReceivedEventView.JOIN_GAME]) => {
         try {
             let game = await Game.findById(gameId);
             if (game && game.isOpen) {
@@ -106,14 +107,14 @@ io.on("connect", (socket) => {
                 };
                 game.players.push(player);
                 game = await game.save();
-                io.to(gameId).emit("update-game", game);
+                io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
             }
         } catch (e) {
             console.error(e);
         }
     });
 
-    socket.on("create-game", async (nickName) => {
+    socket.on(SocketReceivedEventView.CREATE_GAME, async ({nickName}: SocketReceivedEventData[SocketReceivedEventView.CREATE_GAME]) => {
         try {
             const quotableData = await getQuotableAPIData();
             let game = new Game();
@@ -128,7 +129,7 @@ io.on("connect", (socket) => {
 
             const gameId = game._id.toString();
             socket.join(gameId);
-            io.to(gameId).emit("update-game", game);
+            io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
         } catch (e) {
             console.error(e);
         }
@@ -146,7 +147,7 @@ const startGameClock = async (gameId: string) => {
             (function gameIntervalFunc() {
                 const formatTime = calculateTime(time);
                 if (time >= 0) {
-                    io.to(gameId).emit("timer", {countDown: formatTime, msg: "Time Remaining"});
+                    io.to(gameId).emit(SocketSentEventView.TIMER, {countDown: formatTime, msg: "Time Remaining"});
                     time--;
                 } else {
                     (async () => {
@@ -162,7 +163,7 @@ const startGameClock = async (gameId: string) => {
                                 }
                             });
                             game = await game.save();
-                            io.to(gameId).emit("update-game", game);
+                            io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
                         }
                         clearInterval(timerId!);
                     })();
