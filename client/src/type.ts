@@ -58,7 +58,7 @@ export type SocketReceivedEventData = {
         game: Game;
     };
     [SocketReceivedEventView.TIMER]: {
-        countDown: string;
+        countDown: string | number;
         msg: string;
     };
     [SocketReceivedEventView.DONE]: {

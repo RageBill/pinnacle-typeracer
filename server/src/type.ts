@@ -1,4 +1,5 @@
 import {GameProps} from "./Models/Game";
+import SocketIO from "socket.io";
 
 // Data sent (to client) through socket
 export enum SocketSentEventView {
@@ -12,7 +13,7 @@ export type SocketSentEventData = {
         game: GameProps;
     };
     [SocketSentEventView.TIMER]: {
-        countDown: string;
+        countDown: string | number;
         msg: string;
     };
     [SocketSentEventView.DONE]: {
@@ -49,3 +50,17 @@ export type SocketReceivedEventData = {
         nickName: string;
     };
 };
+
+// Typing the socket
+export interface Socket extends SocketIO.Socket {
+    on<T extends SocketReceivedEventView>(event: T, listener: (data: SocketReceivedEventData[T]) => void): this;
+    emit<T extends SocketSentEventView>(event: T, data: SocketSentEventData[T]): boolean;
+}
+
+interface Namespace extends SocketIO.Namespace {
+    emit<T extends SocketSentEventView>(event: T, data: SocketSentEventData[T]): boolean;
+}
+
+export interface IO extends SocketIO.Server {
+    to(room: string): Namespace;
+}

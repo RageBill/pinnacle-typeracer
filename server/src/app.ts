@@ -3,21 +3,21 @@ import socketio from "socket.io";
 import mongoose from "mongoose";
 import {getQuotableAPIData} from "./QuotableAPI";
 import {Game, PlayerProps} from "./Models/Game";
-import {SocketReceivedEventData, SocketReceivedEventView, SocketSentEventView} from "./type";
+import {IO, Socket, SocketReceivedEventView, SocketSentEventView} from "./type";
 
 const app = express();
 
 app.use("/", express.static("../client/build"));
 
 const expressServer = app.listen(3001);
-const io = socketio(expressServer);
+const io: IO = socketio(expressServer);
 
 mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser: true, useUnifiedTopology: true}, () => {
     console.info("successfully connected to database");
 });
 
-io.on("connect", (socket) => {
-    socket.on(SocketReceivedEventView.RESTART_GAME, async ({gameId}: SocketReceivedEventData[SocketReceivedEventView.RESTART_GAME]) => {
+io.on("connect", (socket: Socket) => {
+    socket.on(SocketReceivedEventView.RESTART_GAME, async ({gameId}) => {
         try {
             let game = await Game.findById(gameId);
             if (game && game.isOpen === false && game.isOver) {
@@ -37,7 +37,7 @@ io.on("connect", (socket) => {
         }
     });
 
-    socket.on(SocketReceivedEventView.USER_INPUT, async ({userInput, gameId}: SocketReceivedEventData[SocketReceivedEventView.USER_INPUT]) => {
+    socket.on(SocketReceivedEventView.USER_INPUT, async ({userInput, gameId}) => {
         try {
             let game = await Game.findById(gameId);
             if (game && game.isOpen === false && game.isOver === false) {
@@ -73,7 +73,7 @@ io.on("connect", (socket) => {
         }
     });
 
-    socket.on(SocketReceivedEventView.TIMER, async ({gameId, playerId}: SocketReceivedEventData[SocketReceivedEventView.TIMER]) => {
+    socket.on(SocketReceivedEventView.TIMER, async ({gameId, playerId}) => {
         let countDown = 3; // 3 seconds before start
         let game = await Game.findById(gameId);
         const player = game?.players.id(playerId);
@@ -95,7 +95,7 @@ io.on("connect", (socket) => {
         }
     });
 
-    socket.on(SocketReceivedEventView.JOIN_GAME, async ({gameId, nickName}: SocketReceivedEventData[SocketReceivedEventView.JOIN_GAME]) => {
+    socket.on(SocketReceivedEventView.JOIN_GAME, async ({gameId, nickName}) => {
         try {
             let game = await Game.findById(gameId);
             if (game && game.isOpen) {
@@ -114,7 +114,7 @@ io.on("connect", (socket) => {
         }
     });
 
-    socket.on(SocketReceivedEventView.CREATE_GAME, async ({nickName}: SocketReceivedEventData[SocketReceivedEventView.CREATE_GAME]) => {
+    socket.on(SocketReceivedEventView.CREATE_GAME, async ({nickName}) => {
         try {
             const quotableData = await getQuotableAPIData();
             let game = new Game();
@@ -135,6 +135,10 @@ io.on("connect", (socket) => {
         }
     });
 });
+
+/**
+ * Helper functions
+ */
 
 const startGameClock = async (gameId: string) => {
     const game = await Game.findById(gameId);

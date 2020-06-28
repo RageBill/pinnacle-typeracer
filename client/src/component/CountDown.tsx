@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {socket} from "../socketConfig";
-import {Game, SocketReceivedEventView} from "../type";
+import {Game, SocketReceivedEventData, SocketReceivedEventView} from "../type";
 
 export const CountDown = ({isOpen}: {isOpen: Game["isOpen"]}) => {
-    const [timer, setTimer] = useState({countDown: "", msg: ""});
+    const [timer, setTimer] = useState<SocketReceivedEventData[SocketReceivedEventView.TIMER]>({countDown: "", msg: ""});
 
     useEffect(() => {
         if (isOpen) {
