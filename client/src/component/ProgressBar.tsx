@@ -1,9 +1,16 @@
 import React from "react";
-import {Container, Header, Progress} from "semantic-ui-react";
+import {Container, Header, Progress, SemanticCOLORS} from "semantic-ui-react";
+import {Game, Player} from "../type";
 
-const SemanticCOLORS = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "grey", "black"];
+const semanticColors: SemanticCOLORS[] = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "grey", "black"];
 
-export const ProgressBar = ({players, player: myself, words}) => {
+interface Props {
+    players: Game["players"];
+    player: Player;
+    words: Game["words"];
+}
+
+export const ProgressBar = ({players, player: myself, words}: Props) => {
     const ownProgress = React.useMemo(() => calculatePercentage(myself, words), [myself, words]);
 
     return (
@@ -14,7 +21,7 @@ export const ProgressBar = ({players, player: myself, words}) => {
             <Progress percent={ownProgress} indicating precision={2} size="large" />
             {players.map((player) => {
                 const playerProgress = calculatePercentage(player, words);
-                return player._id !== myself._id ? (
+                return player.socketId !== myself.socketId ? (
                     <>
                         <Header as="h3" color={getRandomColor()} style={{position: "relative", left: `${playerProgress}%`, transition: "left"}}>
                             {player.nickName}
@@ -27,13 +34,15 @@ export const ProgressBar = ({players, player: myself, words}) => {
     );
 };
 
-function calculatePercentage(player, words) {
+ProgressBar.displayName = "ProgressBar";
+
+function calculatePercentage(player: Player, words: Game["words"]) {
     if (player.currentWordIndex !== 0) {
         return (player.currentWordIndex / words.length) * 100;
     }
 }
 
 function getRandomColor() {
-    const totalColors = SemanticCOLORS.length;
-    return SemanticCOLORS[Math.floor(Math.random() * totalColors)];
+    const totalColors = semanticColors.length;
+    return semanticColors[Math.floor(Math.random() * totalColors)];
 }

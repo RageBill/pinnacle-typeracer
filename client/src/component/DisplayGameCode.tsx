@@ -1,12 +1,17 @@
 import React, {useRef, useState} from "react";
 import {Button, Container, Header, Input, Message} from "semantic-ui-react";
+import {Game} from "../type";
 
-export const DisplayGameCode = ({gameId}) => {
+interface Props {
+    gameId: Game["_id"];
+}
+
+export const DisplayGameCode = ({gameId}: Props) => {
     const [copySuccess, setCopySuccess] = useState(false);
-    const textInputRef = useRef(null);
+    const textInputRef = useRef<Input>(null);
 
     const copyToClipboard = () => {
-        textInputRef.current.select();
+        textInputRef.current?.select();
         document.execCommand("copy");
         setCopySuccess(true);
     };
@@ -26,3 +31,5 @@ export const DisplayGameCode = ({gameId}) => {
         </Container>
     );
 };
+
+DisplayGameCode.displayName = "DisplayGameCode";

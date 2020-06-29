@@ -1,16 +1,17 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import {socket} from "../socketConfig";
 import {Button, Container, Form, Header} from "semantic-ui-react";
+import {Player, SocketSentEventView} from "../type";
 
 export const CreateGame = () => {
-    const [nickName, setNickName] = useState("");
+    const [nickName, setNickName] = useState<Player["nickName"]>("");
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        socket.emit("create-game", nickName);
+        socket.emit(SocketSentEventView.CREATE_GAME, {nickName});
     };
 
-    const onNickNameInput = (e) => setNickName(e.target.value);
+    const onNickNameInput = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
 
     return (
         <Container textAlign="center">
@@ -31,3 +32,5 @@ export const CreateGame = () => {
         </Container>
     );
 };
+
+CreateGame.displayName = "CreateGame";
