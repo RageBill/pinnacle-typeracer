@@ -4,7 +4,7 @@
     "description": "",
     "main": "server/app.ts",
     "scripts": {
-        "dev": "nodemon src/app.js",
+        "dev": "nodemon --watch \"src/**/*.ts\" --exec yarn run start",
         "format": "prettier --write --ignore-path ../.gitignore \"**/*.{js,ts,tsx,json}\"",
         "ts-node": "TS_NODE_PROJECT=./tsconfig.json ./node_modules/.bin/ts-node",
         "start": "yarn ts-node src/app.ts",

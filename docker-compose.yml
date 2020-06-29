@@ -18,6 +18,8 @@ services:
         volumes:
             - ./client/:/usr/app/
             - client_node_modules:/usr/app/node_modules
+        depends_on:
+            - express_server
 
     express_server:
         build:

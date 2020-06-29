@@ -12,6 +12,12 @@ const app = express();
 
 app.use("/", express.static("../client/build"));
 
+app.get("/docker-ray", (req, res) => {
+    res.status(200).json({
+        ray: "hi",
+    });
+});
+
 const expressServer = app.listen(3001);
 const io: IO = socketio(expressServer);
 
