@@ -25,6 +25,15 @@ io.on("connect", (socket: Socket) => {
                 game.words = quotableData;
                 game.isOpen = true;
                 game.isOver = false;
+                // Remove disconnected players
+                io.clients((err: Error, clients: string[]) => {
+                    if (err) {
+                        console.error(err);
+                    }
+                    if (game) {
+                        game.players = game.players.filter((player) => clients.includes(player.socketId));
+                    }
+                });
                 game.players.forEach((player: PlayerProps) => {
                     player.currentWordIndex = 0;
                     player.WPM = -1;
