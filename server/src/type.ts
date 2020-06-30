@@ -63,4 +63,8 @@ interface Namespace extends SocketIO.Namespace {
 
 export interface IO extends SocketIO.Server {
     to(room: string): Namespace;
+    clients(...args: any[]): Namespace;
 }
+
+// Typing listeners
+export type SocketEventListener<T extends SocketReceivedEventView> = (socket: Socket, io: IO) => (data: SocketReceivedEventData[T]) => void;
