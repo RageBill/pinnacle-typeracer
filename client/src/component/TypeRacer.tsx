@@ -27,8 +27,8 @@ export const TypeRacer = ({gameState}: Props) => {
                 <DisplayWords words={words} player={player} />
                 <PlayerInputForm isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
                 <CountDown isOpen={isOpen} />
-                <ProgressBar players={players} player={player} words={words} />
                 <StartButton player={player} isOpen={isOpen} isOver={isOver} gameId={_id} />
+                <ProgressBar players={players} player={player} words={words} />
                 <ScoreBoard players={players} player={player} />
                 <br />
                 <br />
