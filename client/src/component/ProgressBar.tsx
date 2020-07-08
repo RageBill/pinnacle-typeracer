@@ -12,6 +12,7 @@ interface Props {
 
 export const ProgressBar = ({players, player: myself, words}: Props) => {
     const [ownProgress, setOwnProgress] = useState(0);
+    const ownIndex = players.findIndex((_) => _.socketId === myself.socketId);
 
     useEffect(() => {
         setOwnProgress(calculatePercentage(myself, words));
@@ -19,15 +20,15 @@ export const ProgressBar = ({players, player: myself, words}: Props) => {
 
     return (
         <Container textAlign="left">
-            <Header as="h3" color={getRandomColor()} style={{position: "relative", left: `${ownProgress}%`, transition: "left"}}>
+            <Header as="h3" color={getPlayerColor(ownIndex)} style={{position: "relative", left: `${ownProgress}%`, transition: "left"}}>
                 {`You (${myself.nickName})`}
             </Header>
             <Progress percent={ownProgress} indicating precision={2} size="large" />
-            {players.map((player) => {
+            {players.map((player, index) => {
                 const playerProgress = calculatePercentage(player, words);
                 return player.socketId !== myself.socketId ? (
                     <>
-                        <Header as="h3" color={getRandomColor()} style={{position: "relative", left: `${playerProgress}%`, transition: "left"}}>
+                        <Header as="h3" color={getPlayerColor(index)} style={{position: "relative", left: `${playerProgress}%`, transition: "left"}}>
                             {player.nickName}
                         </Header>
                         <Progress percent={playerProgress} precision={2} size="large" />
@@ -48,7 +49,6 @@ function calculatePercentage(player: Player, words: Game["words"]) {
     }
 }
 
-function getRandomColor() {
-    const totalColors = semanticColors.length;
-    return semanticColors[Math.floor(Math.random() * totalColors)];
+function getPlayerColor(index: number) {
+    return semanticColors[index % semanticColors.length];
 }
