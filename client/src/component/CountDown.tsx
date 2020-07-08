@@ -9,21 +9,17 @@ interface Props {
 export const CountDown = ({isOpen}: Props) => {
     const [timer, setTimer] = useState<SocketReceivedEventData[SocketReceivedEventView.TIMER]>({countDown: "", msg: ""});
 
-    const removeListeners = () => {
-        socket.removeListener(SocketReceivedEventView.TIMER);
-        socket.removeListener(SocketReceivedEventView.DONE);
-    };
-
     useEffect(() => {
         if (isOpen) {
             setTimer({countDown: "", msg: ""});
-            socket.on(SocketReceivedEventView.TIMER, ({countDown, msg}) => {
-                setTimer({countDown, msg});
-            });
-            socket.on(SocketReceivedEventView.DONE, removeListeners);
         }
+        socket.on(SocketReceivedEventView.TIMER, ({countDown, msg}) => {
+            setTimer({countDown, msg});
+        });
 
-        return removeListeners;
+        return () => {
+            socket.removeListener(SocketReceivedEventView.TIMER);
+        };
     }, [isOpen]);
 
     const {countDown, msg} = timer;

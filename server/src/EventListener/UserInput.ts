@@ -19,7 +19,6 @@ export const userInput: SocketEventListener<SocketReceivedEventView.USER_INPUT> 
                         const {startTime} = game;
                         player.WPM = calculateWPM(startTime!, endTime, player);
                         game = await game.save();
-                        socket.emit(SocketSentEventView.DONE, {gameId});
 
                         if (game.isOpen === false && game.isOver === false) {
                             if (game.players.every((player: PlayerProps) => player.WPM >= 0)) {

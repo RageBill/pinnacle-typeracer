@@ -10,29 +10,33 @@ const startGameClock = (io: IO) => async (gameId: string) => {
 
         const timerId = setInterval(
             (function gameIntervalFunc() {
-                const formatTime = calculateTime(time);
-                if (time >= 0) {
-                    io.to(gameId).emit(SocketSentEventView.TIMER, {countDown: formatTime, msg: "Time Remaining"});
-                    time--;
-                } else {
-                    (async () => {
-                        const endTime = new Date().getTime();
-                        let game = await Game.findById(gameId);
-                        if (game) {
-                            const {startTime} = game;
-                            game.isOver = true;
-                            game.players.forEach((player: PlayerProps, index: number) => {
-                                // calculate WPM for all those who didn't finish the race
-                                if (game && player.WPM === -1) {
-                                    game.players[index].WPM = calculateWPM(startTime!, endTime, player);
+                Game.findById(gameId).then((game) => {
+                    if (game) {
+                        const formatTime = calculateTime(time);
+                        if (time >= 0 && !game.isOver) {
+                            io.to(gameId).emit(SocketSentEventView.TIMER, {countDown: formatTime, msg: "Time Remaining"});
+                            time--;
+                        } else {
+                            clearInterval(timerId!);
+                            (async () => {
+                                const endTime = new Date().getTime();
+                                let game = await Game.findById(gameId);
+                                if (game) {
+                                    const {startTime} = game;
+                                    game.isOver = true;
+                                    game.players.forEach((player: PlayerProps, index: number) => {
+                                        // calculate WPM for all those who didn't finish the race
+                                        if (game && player.WPM === -1) {
+                                            game.players[index].WPM = calculateWPM(startTime!, endTime, player);
+                                        }
+                                    });
+                                    game = await game.save();
+                                    io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
                                 }
-                            });
-                            game = await game.save();
-                            io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
+                            })();
                         }
-                        clearInterval(timerId!);
-                    })();
-                }
+                    }
+                });
                 return gameIntervalFunc; // return the function for setInterval to execute
             })(), // execute the function immediately
             1000
