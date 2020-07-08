@@ -13,11 +13,12 @@ const startGameClock = (io: IO) => async (gameId: string) => {
                 Game.findById(gameId).then((game) => {
                     if (game) {
                         const formatTime = calculateTime(time);
-                        if (time >= 0 && !game.isOver) {
+                        if (time > 0 && !game.isOver) {
                             io.to(gameId).emit(SocketSentEventView.TIMER, {countDown: formatTime, msg: "Time Remaining"});
                             time--;
                         } else {
                             clearInterval(timerId!);
+                            io.to(gameId).emit(SocketSentEventView.TIMER, {countDown: formatTime, msg: "Race Ended"});
                             (async () => {
                                 const endTime = new Date().getTime();
                                 let game = await Game.findById(gameId);
