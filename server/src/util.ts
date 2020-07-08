@@ -6,7 +6,7 @@ const startGameClock = (io: IO) => async (gameId: string) => {
     if (game) {
         game.startTime = new Date().getTime();
         await game.save();
-        let time = 60; // total time for the race
+        let time = Math.ceil((game.words.length * 60) / 40); // calculate total time for the race - the baseline is 40 wpm to finish the race
 
         const timerId = setInterval(
             (function gameIntervalFunc() {
