@@ -4,7 +4,8 @@ import {SocketEventListener, SocketReceivedEventView, SocketSentEventView} from 
 
 export const createGame: SocketEventListener<SocketReceivedEventView.CREATE_GAME> = (socket, io) => async ({nickName}) => {
     try {
-        const quotableData = await getQuotableAPIData();
+        const minLength = Math.round(Math.random() * 200); // From 0 characters to 200 characters
+        const quotableData = await getQuotableAPIData({minLength, maxLength: 400}); // Max 400 characters
         let game = new Game();
         game.words = quotableData;
         const player = {

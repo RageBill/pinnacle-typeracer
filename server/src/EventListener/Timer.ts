@@ -34,7 +34,8 @@ export const timer: SocketEventListener<SocketReceivedEventView.TIMER> = (socket
 
         // Case 2: make game room open again
         if (game.isOver) {
-            game.words = await getQuotableAPIData();
+            const minLength = Math.round(Math.random() * 200); // From 0 characters to 200 characters
+            game.words = await getQuotableAPIData({minLength, maxLength: 400}); // Max 400 characters
             game.isOpen = true;
             game.isOver = false;
             // Remove disconnected players
