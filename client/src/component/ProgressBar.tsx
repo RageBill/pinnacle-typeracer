@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Container, Header, Progress, SemanticCOLORS} from "semantic-ui-react";
 import {Game, Player} from "../type";
 
@@ -11,7 +11,11 @@ interface Props {
 }
 
 export const ProgressBar = ({players, player: myself, words}: Props) => {
-    const ownProgress = React.useMemo(() => calculatePercentage(myself, words), [myself, words]);
+    const [ownProgress, setOwnProgress] = useState(0);
+
+    useEffect(() => {
+        setOwnProgress(calculatePercentage(myself, words));
+    }, [myself, words]);
 
     return (
         <Container textAlign="left">
@@ -39,6 +43,8 @@ ProgressBar.displayName = "ProgressBar";
 function calculatePercentage(player: Player, words: Game["words"]) {
     if (player.currentWordIndex !== 0) {
         return (player.currentWordIndex / words.length) * 100;
+    } else {
+        return 0;
     }
 }
 
