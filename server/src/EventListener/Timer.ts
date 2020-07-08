@@ -11,7 +11,7 @@ export const timer: SocketEventListener<SocketReceivedEventView.TIMER> = (socket
     if (game) {
         // Case 1: start new game
         if (game.isOpen) {
-            let countDown = 3; // 3 seconds before start
+            let countDown = 5; // 5 seconds before start
             const player = game.players.id(playerId);
             if (player && player.isPartyLeader) {
                 timerId = setInterval(async () => {
