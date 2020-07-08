@@ -26,6 +26,15 @@ export const PlayerInputForm = ({isOpen, isOver, gameId, words, player}: Props) 
 
     const onUserInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
+
+        // handle last word specially - to auto submit if the last word matches
+        if (player.currentWordIndex === words.length - 1) {
+            if (value.trim() === getCurrentWord(words, player).trim()) {
+                socket.emit(SocketSentEventView.USER_INPUT, {userInput: value, gameId});
+                resetForm();
+            }
+        }
+
         const lastChar = value.charAt(value.length - 1);
         if (lastChar === " ") {
             socket.emit(SocketSentEventView.USER_INPUT, {userInput, gameId});
