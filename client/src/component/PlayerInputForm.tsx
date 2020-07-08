@@ -15,14 +15,16 @@ interface Props {
 export const PlayerInputForm = ({isOpen, isOver, gameId, words, player}: Props) => {
     const [userInput, setUserInput] = useState("");
     const textInput = useRef<Input>(null);
+    const resetForm = () => setUserInput("");
 
     useEffect(() => {
         if (!isOpen) {
             textInput.current?.focus(); // user can immediate start typing once the game start
+        } else {
+            resetForm();
         }
     }, [isOpen]);
 
-    const resetForm = () => setUserInput("");
 
     const onUserInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
