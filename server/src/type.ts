@@ -5,7 +5,6 @@ import SocketIO from "socket.io";
 export enum SocketSentEventView {
     UPDATE_GAME = "UPDATE_GAME",
     TIMER = "TIMER",
-    DONE = "DONE",
 }
 
 export type SocketSentEventData = {
@@ -16,14 +15,10 @@ export type SocketSentEventData = {
         countDown: string | number;
         msg: string;
     };
-    [SocketSentEventView.DONE]: {
-        gameId: string;
-    };
 };
 
 // Data received (from client) through socket
 export enum SocketReceivedEventView {
-    RESTART_GAME = "RESTART_GAME",
     USER_INPUT = "USER_INPUT",
     TIMER = "TIMER",
     JOIN_GAME = "JOIN_GAME",
@@ -31,9 +26,6 @@ export enum SocketReceivedEventView {
 }
 
 export type SocketReceivedEventData = {
-    [SocketReceivedEventView.RESTART_GAME]: {
-        gameId: string;
-    };
     [SocketReceivedEventView.USER_INPUT]: {
         gameId: string;
         userInput: string;

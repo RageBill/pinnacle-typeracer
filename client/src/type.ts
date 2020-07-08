@@ -18,7 +18,6 @@ export type Game = {
 
 // Data sent (to server) through socket
 export enum SocketSentEventView {
-    RESTART_GAME = "RESTART_GAME",
     USER_INPUT = "USER_INPUT",
     TIMER = "TIMER",
     JOIN_GAME = "JOIN_GAME",
@@ -26,9 +25,6 @@ export enum SocketSentEventView {
 }
 
 export type SocketSentEventData = {
-    [SocketSentEventView.RESTART_GAME]: {
-        gameId: string;
-    };
     [SocketSentEventView.USER_INPUT]: {
         gameId: string;
         userInput: string;
@@ -50,7 +46,6 @@ export type SocketSentEventData = {
 export enum SocketReceivedEventView {
     UPDATE_GAME = "UPDATE_GAME",
     TIMER = "TIMER",
-    DONE = "DONE",
 }
 
 export type SocketReceivedEventData = {
@@ -60,8 +55,5 @@ export type SocketReceivedEventData = {
     [SocketReceivedEventView.TIMER]: {
         countDown: string | number;
         msg: string;
-    };
-    [SocketReceivedEventView.DONE]: {
-        gameId: string;
     };
 };
