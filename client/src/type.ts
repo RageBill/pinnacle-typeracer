@@ -22,6 +22,7 @@ export enum SocketSentEventView {
     TIMER = "TIMER",
     JOIN_GAME = "JOIN_GAME",
     CREATE_GAME = "CREATE_GAME",
+    CHANGE_PASSAGE = "CHANGE_PASSAGE",
 }
 
 export type SocketSentEventData = {
@@ -39,6 +40,9 @@ export type SocketSentEventData = {
     };
     [SocketSentEventView.CREATE_GAME]: {
         nickName: string;
+    };
+    [SocketSentEventView.CHANGE_PASSAGE]: {
+        gameId: string;
     };
 };
 

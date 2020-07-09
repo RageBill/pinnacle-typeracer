@@ -2,7 +2,7 @@ import express from "express";
 import socketio from "socket.io";
 import mongoose from "mongoose";
 import {IO, Socket, SocketReceivedEventView} from "./type";
-import {createGame, joinGame, timer, userInput} from "./EventListener";
+import {createGame, joinGame, timer, userInput, changePassage} from "./EventListener";
 
 const app = express();
 
@@ -20,4 +20,5 @@ io.on("connect", (socket: Socket) => {
     socket.on(SocketReceivedEventView.JOIN_GAME, joinGame(socket, io));
     socket.on(SocketReceivedEventView.TIMER, timer(socket, io));
     socket.on(SocketReceivedEventView.USER_INPUT, userInput(socket, io));
+    socket.on(SocketReceivedEventView.CHANGE_PASSAGE, changePassage(socket, io));
 });

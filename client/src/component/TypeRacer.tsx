@@ -1,7 +1,7 @@
 import React from "react";
 import {Redirect} from "react-router-dom";
 import {CountDown} from "./CountDown";
-import {StartButton} from "./StartButton";
+import {PartyLeaderButtonGroup} from "./PartyLeaderButtonGroup";
 import {socket} from "../socketConfig";
 import {DisplayWordsAndUserInput} from "./DisplayWordsAndUserInput";
 import {ProgressBar} from "./ProgressBar";
@@ -25,7 +25,7 @@ export const TypeRacer = ({gameState}: Props) => {
             <Container textAlign="center" style={{marginTop: "36px"}}>
                 <DisplayWordsAndUserInput isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
                 <CountDown isOpen={isOpen} />
-                <StartButton player={player} isOpen={isOpen} isOver={isOver} gameId={_id} />
+                <PartyLeaderButtonGroup player={player} isOpen={isOpen} isOver={isOver} gameId={_id} />
                 <ProgressBar players={players} player={player} words={words} />
                 <ScoreBoard players={players} player={player} />
                 <br />
