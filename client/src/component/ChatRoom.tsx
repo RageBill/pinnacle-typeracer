@@ -9,6 +9,7 @@ interface Props {
 }
 
 export const ChatRoom = ({gameId, player}: Props) => {
+    const [visible, setVisible] = useState(false);
     const [text, setText] = useState("");
     const [messages, setMessages] = useState<Array<{name: string; text: string}>>([]);
     const bottomRef = useRef<HTMLDivElement>(null);
@@ -19,6 +20,8 @@ export const ChatRoom = ({gameId, player}: Props) => {
         socket.emit(SocketSentEventView.CHAT_MESSAGE, {gameId, name: player.nickName, text});
         setText("");
     };
+
+    const toggleChat = () => setVisible(!visible);
 
     useEffect(() => {
         socket.on(SocketReceivedEventView.CHAT_MESSAGE, (message) => {
@@ -33,7 +36,8 @@ export const ChatRoom = ({gameId, player}: Props) => {
     }, [messages]);
 
     return (
-        <Segment style={{position: "fixed", top: "30%", right: "1%", width: "300px", height: "350px", padding: 0, display: "flex", flexDirection: "column"}}>
+        <Segment style={{position: "fixed", top: "30%", transition: "right 0.2s linear", right: `${visible ? "1%" : "-300px"}`, width: "300px", height: "350px", padding: 0, display: "flex", flexDirection: "column"}}>
+            <Button icon={`angle ${visible ? "right" : "left"}`} style={{position: "absolute", left: "-45px"}} onClick={toggleChat} />
             <List animated style={{flex: 1, padding: 10, marginBottom: 0, overflowY: "scroll"}}>
                 {messages.map((_, index) => (
                     <List.Item style={{width: "100%"}}>
