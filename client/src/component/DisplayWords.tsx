@@ -34,7 +34,7 @@ export const DisplayWords = ({words, currentWordIndex, userInput}: Props) => {
                 </Header>
             )}
             {mistakenCharsLength > 0 && (
-                <Header as="span" color="red" dividing>
+                <Header as="span" color="red" dividing style={{backgroundColor: "pink"}}>
                     {currentWord.slice(matchedChars.length, matchedChars.length + mistakenCharsLength)}
                 </Header>
             )}
@@ -44,7 +44,7 @@ export const DisplayWords = ({words, currentWordIndex, userInput}: Props) => {
                 </Header>
             )}
             {overflowFromMistakenCharsLength > 0 && wordsToBeTyped && (
-                <Header as="span" color="red" dividing>
+                <Header as="span" color="red" dividing style={{backgroundColor: "pink"}}>
                     {wordsToBeTyped.slice(0, overflowFromMistakenCharsLength)}
                 </Header>
             )}
