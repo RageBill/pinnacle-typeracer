@@ -9,6 +9,7 @@ import {ScoreBoard} from "./ScoreBoard";
 import {DisplayGameCode} from "./DisplayGameCode";
 import {Container, Header} from "semantic-ui-react";
 import {Game} from "../type";
+import {ChangeNameInput} from "./ChangeNameInput";
 
 interface Props {
     gameState: Game;
@@ -26,6 +27,7 @@ export const TypeRacer = ({gameState}: Props) => {
                 <DisplayWordsAndUserInput isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
                 <CountDown isOpen={isOpen} />
                 <PartyLeaderButtonGroup player={player} isOpen={isOpen} isOver={isOver} gameId={_id} />
+                <ChangeNameInput player={player} gameId={_id} isOpen={isOpen} isOver={isOver} />
                 <ProgressBar players={players} player={player} words={words} />
                 <ScoreBoard players={players} player={player} />
                 <br />

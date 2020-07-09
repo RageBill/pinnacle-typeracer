@@ -23,6 +23,7 @@ export enum SocketSentEventView {
     JOIN_GAME = "JOIN_GAME",
     CREATE_GAME = "CREATE_GAME",
     CHANGE_PASSAGE = "CHANGE_PASSAGE",
+    CHANGE_NAME = "CHANGE_NAME",
 }
 
 export type SocketSentEventData = {
@@ -42,6 +43,11 @@ export type SocketSentEventData = {
         nickName: string;
     };
     [SocketSentEventView.CHANGE_PASSAGE]: {
+        gameId: string;
+    };
+    [SocketSentEventView.CHANGE_NAME]: {
+        nickName: string;
+        playerSocketId: string;
         gameId: string;
     };
 };
