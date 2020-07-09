@@ -20,6 +20,7 @@ export const DisplayWords = ({words, player, userInput}: Props) => {
     const mistakenCharsLength = userInput.length - matchedChars.length;
     const restOfCharsLength = currentWord.length - matchedChars.length - mistakenCharsLength > 0 ? currentWord.length - matchedChars.length - mistakenCharsLength : 0;
     const wordsToBeTyped = getWordsToBeTyped(words, player);
+    const overflowFromMistakenCharsLength = userInput.length > currentWord.length ? userInput.length - currentWord.length : 0;
     return (
         <Segment style={containerStyle}>
             {typedWords && (
@@ -42,7 +43,12 @@ export const DisplayWords = ({words, player, userInput}: Props) => {
                     {currentWord.slice(matchedChars.length + mistakenCharsLength)}
                 </Header>
             )}
-            {wordsToBeTyped && <Header as="span">{wordsToBeTyped}</Header>}
+            {overflowFromMistakenCharsLength > 0 && wordsToBeTyped && (
+                <Header as="span" color="red" dividing>
+                    {wordsToBeTyped.slice(0, overflowFromMistakenCharsLength)}
+                </Header>
+            )}
+            {wordsToBeTyped && <Header as="span">{wordsToBeTyped.slice(overflowFromMistakenCharsLength)}</Header>}
         </Segment>
     );
 };
