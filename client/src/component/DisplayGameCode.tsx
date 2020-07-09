@@ -14,6 +14,7 @@ export const DisplayGameCode = ({gameId}: Props) => {
         textInputRef.current?.select();
         document.execCommand("copy");
         setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 3000);
     };
 
     return (
