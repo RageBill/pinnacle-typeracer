@@ -5,6 +5,7 @@ import SocketIO from "socket.io";
 export enum SocketSentEventView {
     UPDATE_GAME = "UPDATE_GAME",
     TIMER = "TIMER",
+    CHAT_MESSAGE = "CHAT_MESSAGE",
 }
 
 export type SocketSentEventData = {
@@ -14,6 +15,10 @@ export type SocketSentEventData = {
     [SocketSentEventView.TIMER]: {
         countDown: string | number;
         msg: string;
+    };
+    [SocketSentEventView.CHAT_MESSAGE]: {
+        name: string;
+        text: string;
     };
 };
 
@@ -25,6 +30,7 @@ export enum SocketReceivedEventView {
     CREATE_GAME = "CREATE_GAME",
     CHANGE_PASSAGE = "CHANGE_PASSAGE",
     CHANGE_NAME = "CHANGE_NAME",
+    CHAT_MESSAGE = "CHAT_MESSAGE",
 }
 
 export type SocketReceivedEventData = {
@@ -52,6 +58,11 @@ export type SocketReceivedEventData = {
         nickName: string;
         playerSocketId: string;
         gameId: string;
+    };
+    [SocketReceivedEventView.CHAT_MESSAGE]: {
+        gameId: string;
+        name: string;
+        text: string;
     };
 };
 

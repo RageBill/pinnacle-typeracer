@@ -1,3 +1,7 @@
+import {SemanticCOLORS} from "semantic-ui-react";
+
+export const semanticColors: SemanticCOLORS[] = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "grey", "black"];
+
 export type Player = {
     _id: string;
     socketId: string;
@@ -24,6 +28,7 @@ export enum SocketSentEventView {
     CREATE_GAME = "CREATE_GAME",
     CHANGE_PASSAGE = "CHANGE_PASSAGE",
     CHANGE_NAME = "CHANGE_NAME",
+    CHAT_MESSAGE = "CHAT_MESSAGE",
 }
 
 export type SocketSentEventData = {
@@ -52,12 +57,18 @@ export type SocketSentEventData = {
         playerSocketId: string;
         gameId: string;
     };
+    [SocketSentEventView.CHAT_MESSAGE]: {
+        gameId: string;
+        name: string;
+        text: string;
+    };
 };
 
 // Data received (from server) through socket
 export enum SocketReceivedEventView {
     UPDATE_GAME = "UPDATE_GAME",
     TIMER = "TIMER",
+    CHAT_MESSAGE = "CHAT_MESSAGE",
 }
 
 export type SocketReceivedEventData = {
@@ -67,5 +78,9 @@ export type SocketReceivedEventData = {
     [SocketReceivedEventView.TIMER]: {
         countDown: string | number;
         msg: string;
+    };
+    [SocketReceivedEventView.CHAT_MESSAGE]: {
+        name: string;
+        text: string;
     };
 };

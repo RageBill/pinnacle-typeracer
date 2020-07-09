@@ -1,9 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {Container, Header, Progress, Segment, SemanticCOLORS} from "semantic-ui-react";
-import {Game, Player} from "../type";
+import {Container, Header, Progress, Segment} from "semantic-ui-react";
+import {Game, Player, semanticColors} from "../type";
 import {getScoreBoard} from "./ScoreBoard";
-
-const semanticColors: SemanticCOLORS[] = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "grey", "black"];
 
 interface Props {
     players: Game["players"];
