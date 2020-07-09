@@ -25,7 +25,6 @@ export const DisplayWordsAndUserInput = ({isOpen, isOver, gameId, words, player}
         }
     }, [isOpen]);
 
-
     const onUserInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
 
@@ -38,7 +37,7 @@ export const DisplayWordsAndUserInput = ({isOpen, isOver, gameId, words, player}
         }
 
         const lastChar = value.charAt(value.length - 1);
-        if (lastChar === " ") {
+        if (lastChar === " " && value.trim() === getCurrentWord(words, player).trim()) {
             socket.emit(SocketSentEventView.USER_INPUT, {userInput, gameId});
             resetForm();
         } else {
