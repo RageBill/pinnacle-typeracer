@@ -44,6 +44,8 @@ export type SocketSentEventData = {
     };
     [SocketSentEventView.CHANGE_PASSAGE]: {
         gameId: string;
+        minLength: number;
+        maxLength: number;
     };
     [SocketSentEventView.CHANGE_NAME]: {
         nickName: string;

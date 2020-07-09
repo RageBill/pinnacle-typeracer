@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Container} from "semantic-ui-react";
+import {Button, Container, Input} from "semantic-ui-react";
 import {socket} from "../socketConfig";
 import {Game, Player, SocketSentEventView} from "../type";
 
@@ -12,6 +12,8 @@ interface Props {
 
 export const PartyLeaderButtonGroup = ({player, isOpen, isOver, gameId}: Props) => {
     const [showButtons, setShowButtons] = useState(false);
+    const [minLengthText, setMinLengthText] = useState("");
+    const [maxLengthText, setMaxLengthText] = useState("");
 
     useEffect(() => {
         if (isOpen || isOver) {
@@ -19,7 +21,17 @@ export const PartyLeaderButtonGroup = ({player, isOpen, isOver, gameId}: Props) 
         }
     }, [isOpen, isOver]);
 
-    const onChangePassageClick = () => socket.emit(SocketSentEventView.CHANGE_PASSAGE, {gameId});
+    const onMinLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => setMinLengthText(e.target.value);
+
+    const onMaxLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxLengthText(e.target.value);
+
+    const onChangePassageClick = () => {
+        let minLength = Math.round(parseFloat(minLengthText));
+        minLength = isNaN(minLength) ? Math.round(Math.random() * 200) : minLength; // default minLength is random from 0 to 200 - because when minLength is 0, there are overwhelmingly more short passages
+        let maxLength = Math.round(parseFloat(maxLengthText));
+        maxLength = isNaN(maxLength) ? 400 : maxLength; // default maxLength is 400
+        socket.emit(SocketSentEventView.CHANGE_PASSAGE, {gameId, minLength, maxLength});
+    };
 
     const onStartButtonClick = () => {
         setShowButtons(false);
@@ -28,14 +40,22 @@ export const PartyLeaderButtonGroup = ({player, isOpen, isOver, gameId}: Props) 
 
     return player.isPartyLeader && showButtons ? (
         <Container>
-            {isOpen && (
-                <Button onClick={onChangePassageClick} color="violet">
-                    Change Passage
-                </Button>
-            )}
             <Button onClick={onStartButtonClick} color={isOpen ? "green" : "orange"}>
                 {isOpen ? "Start Game" : "New Game"}
             </Button>
+            {isOpen && (
+                <>
+                    <br />
+                    <br />
+                    <Input label="Min Length" type="number" value={minLengthText} onChange={onMinLengthChange} />
+                    <span> </span>
+                    <Input label="Max Length" type="number" value={maxLengthText} onChange={onMaxLengthChange} />
+                    <span> </span>
+                    <Button onClick={onChangePassageClick} color="violet">
+                        Change Passage
+                    </Button>
+                </>
+            )}
         </Container>
     ) : (
         <></>
