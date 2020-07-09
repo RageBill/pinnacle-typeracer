@@ -3,8 +3,7 @@ import {Redirect} from "react-router-dom";
 import {CountDown} from "./CountDown";
 import {StartButton} from "./StartButton";
 import {socket} from "../socketConfig";
-import {DisplayWords} from "./DisplayWords";
-import {PlayerInputForm} from "./PlayerInputForm";
+import {DisplayWordsAndUserInput} from "./DisplayWordsAndUserInput";
 import {ProgressBar} from "./ProgressBar";
 import {ScoreBoard} from "./ScoreBoard";
 import {DisplayGameCode} from "./DisplayGameCode";
@@ -24,8 +23,7 @@ export const TypeRacer = ({gameState}: Props) => {
     } else {
         return player ? (
             <Container textAlign="center">
-                <DisplayWords words={words} player={player} />
-                <PlayerInputForm isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
+                <DisplayWordsAndUserInput isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
                 <CountDown isOpen={isOpen} />
                 <StartButton player={player} isOpen={isOpen} isOver={isOver} gameId={_id} />
                 <ProgressBar players={players} player={player} words={words} />
