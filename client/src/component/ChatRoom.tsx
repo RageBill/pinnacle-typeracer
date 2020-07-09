@@ -39,7 +39,7 @@ export const ChatRoom = ({gameId, player}: Props) => {
         <Segment style={{position: "fixed", top: "30%", transition: "right 0.2s linear", right: `${visible ? "1%" : "-300px"}`, width: "300px", height: "350px", padding: 0, display: "flex", flexDirection: "column"}}>
             <Button icon={`angle ${visible ? "right" : "left"}`} style={{position: "absolute", left: "-45px"}} onClick={toggleChat} />
             <List animated style={{flex: 1, padding: 10, marginBottom: 0, overflowY: "scroll"}}>
-                {messages.map((_, index) => (
+                {messages.map((_) => (
                     <List.Item style={{width: "100%"}}>
                         <List.Icon name="user" />
                         <List.Content>
