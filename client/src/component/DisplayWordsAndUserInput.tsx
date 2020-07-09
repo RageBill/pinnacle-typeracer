@@ -13,15 +13,17 @@ interface Props {
 }
 
 export const DisplayWordsAndUserInput = ({isOpen, isOver, gameId, words, player}: Props) => {
+    const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [userInput, setUserInput] = useState("");
     const textInput = useRef<Input>(null);
-    const resetForm = () => setUserInput("");
+    const clearForm = () => setUserInput("");
 
     useEffect(() => {
         if (!isOpen) {
             textInput.current?.focus(); // user can immediate start typing once the game start
         } else {
-            resetForm();
+            clearForm();
+            setCurrentWordIndex(0);
         }
     }, [isOpen]);
 
@@ -30,16 +32,18 @@ export const DisplayWordsAndUserInput = ({isOpen, isOver, gameId, words, player}
 
         // handle last word specially - to auto submit if the last word matches
         if (player.currentWordIndex === words.length - 1) {
-            if (value.trim() === getCurrentWord(words, player).trim()) {
+            if (value.trim() === getCurrentWord(words, currentWordIndex).trim()) {
                 socket.emit(SocketSentEventView.USER_INPUT, {userInput: value, gameId});
-                resetForm();
+                setCurrentWordIndex(currentWordIndex + 1);
+                clearForm();
             }
         }
 
         const lastChar = value.charAt(value.length - 1);
-        if (lastChar === " " && value.trim() === getCurrentWord(words, player).trim()) {
+        if (lastChar === " " && value.trim() === getCurrentWord(words, currentWordIndex).trim()) {
             socket.emit(SocketSentEventView.USER_INPUT, {userInput, gameId});
-            resetForm();
+            setCurrentWordIndex(currentWordIndex + 1);
+            clearForm();
         } else {
             setUserInput(e.target.value);
         }
@@ -47,8 +51,8 @@ export const DisplayWordsAndUserInput = ({isOpen, isOver, gameId, words, player}
 
     return (
         <>
-            <DisplayWords words={words} player={player} userInput={userInput} />
-            <Input fluid type="text" readOnly={isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} placeholder={getCurrentWord(words, player)} />
+            <DisplayWords words={words} currentWordIndex={currentWordIndex} userInput={userInput} />
+            <Input fluid type="text" disabled={currentWordIndex >= words.length || isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} placeholder={getCurrentWord(words, currentWordIndex)} />
         </>
     );
 };

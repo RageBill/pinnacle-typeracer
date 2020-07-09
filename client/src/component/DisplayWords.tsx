@@ -1,10 +1,10 @@
 import React from "react";
-import {Game, Player} from "../type";
+import {Game} from "../type";
 import {Header, Segment} from "semantic-ui-react";
 
 interface Props {
     words: Game["words"];
-    player: Player;
+    currentWordIndex: number;
     userInput: string;
 }
 
@@ -13,13 +13,13 @@ const containerStyle = {
     marginBottom: 36,
 };
 
-export const DisplayWords = ({words, player, userInput}: Props) => {
-    const typedWords = getTypedWords(words, player);
-    const currentWord = getCurrentWord(words, player);
+export const DisplayWords = ({words, currentWordIndex, userInput}: Props) => {
+    const typedWords = getTypedWords(words, currentWordIndex);
+    const currentWord = getCurrentWord(words, currentWordIndex);
     const matchedChars = getMatchedChars(currentWord, userInput);
     const mistakenCharsLength = userInput.length - matchedChars.length;
     const restOfCharsLength = currentWord.length - matchedChars.length - mistakenCharsLength > 0 ? currentWord.length - matchedChars.length - mistakenCharsLength : 0;
-    const wordsToBeTyped = getWordsToBeTyped(words, player);
+    const wordsToBeTyped = getWordsToBeTyped(words, currentWordIndex);
     const overflowFromMistakenCharsLength = userInput.length > currentWord.length ? userInput.length - currentWord.length : 0;
     return (
         <Segment style={containerStyle}>
@@ -55,12 +55,12 @@ export const DisplayWords = ({words, player, userInput}: Props) => {
 
 DisplayWords.displayName = "DisplayWords";
 
-function getTypedWords(words: Game["words"], player: Player): string {
-    return words.slice(0, player.currentWordIndex).join(" ") + " ";
+function getTypedWords(words: Game["words"], currentWordIndex: number): string {
+    return words.slice(0, currentWordIndex).join(" ") + " ";
 }
 
-export function getCurrentWord(words: Game["words"], player: Player): string {
-    return player.currentWordIndex < words.length ? words[player.currentWordIndex] : "";
+export function getCurrentWord(words: Game["words"], currentWordIndex: number): string {
+    return currentWordIndex < words.length ? words[currentWordIndex] : "";
 }
 
 function getMatchedChars(currentWord: string, userInput: string): string {
@@ -79,7 +79,7 @@ function getMatchedChars(currentWord: string, userInput: string): string {
     }
 }
 
-function getWordsToBeTyped(words: Game["words"], player: Player): string {
+function getWordsToBeTyped(words: Game["words"], currentWordIndex: number): string {
     // add an empty space before this to separate it from the current word
-    return " " + words.slice(player.currentWordIndex + 1, words.length).join(" ");
+    return " " + words.slice(currentWordIndex + 1, words.length).join(" ");
 }
