@@ -56,7 +56,8 @@ export const DisplayWords = ({words, currentWordIndex, userInput}: Props) => {
 DisplayWords.displayName = "DisplayWords";
 
 function getTypedWords(words: Game["words"], currentWordIndex: number): string {
-    return words.slice(0, currentWordIndex).join(" ") + " ";
+    const typedWords = words.slice(0, currentWordIndex).join(" ");
+    return typedWords.length > 0 ? typedWords + " " : "";
 }
 
 export function getCurrentWord(words: Game["words"], currentWordIndex: number): string {
