@@ -21,7 +21,7 @@ export const JoinGame = () => {
     const onNickNameInput = (e: ChangeEvent<HTMLInputElement>) => setUserInput({...userInput, nickName: e.target.value});
 
     return (
-        <Container textAlign="center">
+        <Container textAlign="center" style={{marginTop: "36px"}}>
             <Header as="h1">Join Game</Header>
             <Container textAlign="left">
                 <Form onSubmit={onSubmit}>

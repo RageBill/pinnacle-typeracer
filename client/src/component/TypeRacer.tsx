@@ -22,7 +22,7 @@ export const TypeRacer = ({gameState}: Props) => {
         return <Redirect to="/" />;
     } else {
         return player ? (
-            <Container textAlign="center">
+            <Container textAlign="center" style={{marginTop: "36px"}}>
                 <DisplayWordsAndUserInput isOpen={isOpen} isOver={isOver} gameId={_id} words={words} player={player} />
                 <CountDown isOpen={isOpen} />
                 <StartButton player={player} isOpen={isOpen} isOver={isOver} gameId={_id} />
