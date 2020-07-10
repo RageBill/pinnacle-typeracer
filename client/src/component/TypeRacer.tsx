@@ -45,8 +45,6 @@ export const TypeRacer = ({gameState}: Props) => {
                     <ChangeNameInput player={player} gameId={_id} isOpen={isOpen} isOver={isOver} />
                     <ProgressBar players={players} player={player} words={words} />
                     <ScoreBoard players={players} player={player} />
-                    <br />
-                    <br />
                     <DisplayGameCode gameId={_id} />
                 </Container>
                 <ChatRoom gameId={_id} player={player} isOpen={isOpen} isOver={isOver} />
