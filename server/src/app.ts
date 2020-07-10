@@ -8,6 +8,8 @@ const app = express();
 
 app.use("/", express.static("../client/build"));
 
+app.use("/game/*", express.static("../client/build"));
+
 const expressServer = app.listen(3001);
 const io: IO = socketio(expressServer);
 
