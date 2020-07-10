@@ -18,18 +18,22 @@ export const DisplayGameCode = ({gameId}: Props) => {
     };
 
     return (
-        <Container text textAlign="center">
-            <Header as="h4">Send this code to your friends to join:</Header>
-            <Input type="text" readOnly value={gameId} ref={textInputRef} />
-            <Button secondary onClick={copyToClipboard}>
-                Copy Code
-            </Button>
-            {copySuccess && (
-                <Message positive>
-                    <Message.Header>Code Copied To Clipboard.</Message.Header>
-                </Message>
-            )}
-        </Container>
+        <>
+            <br />
+            <br />
+            <Container text textAlign="center">
+                <Header as="h4">Send this code to your friends to join:</Header>
+                <Input type="text" readOnly value={gameId} ref={textInputRef} />
+                <Button secondary onClick={copyToClipboard}>
+                    Copy Code
+                </Button>
+                {copySuccess && (
+                    <Message positive>
+                        <Message.Header>Code Copied To Clipboard.</Message.Header>
+                    </Message>
+                )}
+            </Container>
+        </>
     );
 };
 

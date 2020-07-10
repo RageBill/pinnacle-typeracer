@@ -1,9 +1,7 @@
 import io from "socket.io-client";
 import {SocketReceivedEventData, SocketReceivedEventView, SocketSentEventData, SocketSentEventView} from "./type";
 
-const socket = io({
-    path: "/socket.io", // default value
-});
+const socket = io(window.location.origin + "/socket.io");
 
 // Use customSocket for stricter type-checking
 const customSocket = {

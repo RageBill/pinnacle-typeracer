@@ -6,9 +6,11 @@ import {socket} from "../socketConfig";
 interface Props {
     gameId: Game["_id"];
     player: Player;
+    isOpen: Game["isOpen"];
+    isOver: Game["isOver"];
 }
 
-export const ChatRoom = ({gameId, player}: Props) => {
+export const ChatRoom = ({gameId, player, isOpen, isOver}: Props) => {
     const [visible, setVisible] = useState(false);
     const [text, setText] = useState("");
     const [messages, setMessages] = useState<Array<{name: string; text: string}>>([]);
@@ -17,8 +19,10 @@ export const ChatRoom = ({gameId, player}: Props) => {
     const onInput = (e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value);
 
     const onSubmit = () => {
-        socket.emit(SocketSentEventView.CHAT_MESSAGE, {gameId, name: player.nickName, text});
-        setText("");
+        if (text.length > 0) {
+            socket.emit(SocketSentEventView.CHAT_MESSAGE, {gameId, name: player.nickName, text});
+            setText("");
+        }
     };
 
     const toggleChat = () => setVisible(!visible);
@@ -30,10 +34,16 @@ export const ChatRoom = ({gameId, player}: Props) => {
 
         bottomRef.current?.scrollIntoView({behavior: "smooth"});
 
+        if (player.WPM >= 0 || isOpen || isOver) {
+            setVisible(true);
+        } else {
+            setVisible(false);
+        }
+
         return () => {
-            socket.removeAllListeners();
+            socket.removeListener(SocketReceivedEventView.CHAT_MESSAGE);
         };
-    }, [messages]);
+    }, [messages, player.WPM, isOpen, isOver]);
 
     return (
         <Segment style={{position: "fixed", top: "30%", transition: "right 0.2s linear", right: `${visible ? "1%" : "-300px"}`, width: "300px", height: "350px", padding: 0, display: "flex", flexDirection: "column"}}>

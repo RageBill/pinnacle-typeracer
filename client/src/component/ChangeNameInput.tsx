@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Container, Input} from "semantic-ui-react";
+import {Container, Form} from "semantic-ui-react";
 import {socket} from "../socketConfig";
 import {Game, Player, SocketSentEventView} from "../type";
 
@@ -24,11 +24,15 @@ export const ChangeNameInput = ({player, isOpen, isOver, gameId}: Props) => {
     return isOpen || isOver ? (
         <>
             <br />
-            <Container>
-                <Input type="text" value={nickName} onChange={onNickNameChange} />
-                <Button onClick={onConfirm} color="brown" disabled={nickName === player.nickName || nickName.length === 0}>
-                    Change Name
-                </Button>
+            <Container style={{width: 400}}>
+                <Form onSubmit={onConfirm}>
+                    <Form.Input type="text" value={nickName} onChange={onNickNameChange}>
+                        <input />
+                        <Form.Button onClick={onConfirm} color="brown" disabled={nickName === player.nickName || nickName.length === 0}>
+                            Change Name
+                        </Form.Button>
+                    </Form.Input>
+                </Form>
             </Container>
         </>
     ) : (

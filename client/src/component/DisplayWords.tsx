@@ -22,7 +22,7 @@ export const DisplayWords = ({words, currentWordIndex, userInput}: Props) => {
     const wordsToBeTyped = getWordsToBeTyped(words, currentWordIndex);
     const overflowFromMistakenCharsLength = userInput.length > currentWord.length ? userInput.length - currentWord.length : 0;
     return (
-        <Segment style={containerStyle}>
+        <Segment style={containerStyle} textAlign="left">
             {typedWords && (
                 <Header as="span" color="green">
                     {typedWords}
@@ -65,19 +65,15 @@ export function getCurrentWord(words: Game["words"], currentWordIndex: number): 
 }
 
 function getMatchedChars(currentWord: string, userInput: string): string {
-    if (currentWord.includes(userInput)) {
-        return userInput;
-    } else {
-        let matchedChars = "";
-        for (let i = 0; i < userInput.length; i++) {
-            if (userInput[i] === currentWord[i]) {
-                matchedChars += userInput[i];
-            } else {
-                break;
-            }
+    let matchedChars = "";
+    for (let i = 0; i < userInput.length; i++) {
+        if (userInput[i] === currentWord[i]) {
+            matchedChars += userInput[i];
+        } else {
+            break;
         }
-        return matchedChars;
     }
+    return matchedChars;
 }
 
 function getWordsToBeTyped(words: Game["words"], currentWordIndex: number): string {

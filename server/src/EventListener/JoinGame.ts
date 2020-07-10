@@ -4,7 +4,7 @@ import {SocketEventListener, SocketReceivedEventView, SocketSentEventView} from 
 export const joinGame: SocketEventListener<SocketReceivedEventView.JOIN_GAME> = (socket, io) => async ({gameId, nickName}) => {
     try {
         let game = await Game.findById(gameId);
-        if (game && game.isOpen) {
+        if (game) {
             const gameId = game._id.toString();
             socket.join(gameId);
             const player = {
