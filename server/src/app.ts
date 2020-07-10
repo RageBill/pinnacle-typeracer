@@ -22,7 +22,7 @@ app.get("/docker-ray", (req, res) => {
 const expressServer = app.listen(3001);
 const io: IO = socketio(expressServer);
 
-mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
+mongoose.connect(process.env.MONGO_URI || `mongodb://localhost:27017/pinnacleTyperacer`, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
     if (err) {
         console.error("error connecting to database", err);
         process.exit(1);

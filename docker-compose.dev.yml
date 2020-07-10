@@ -12,7 +12,7 @@ services:
         tty: true        # docker run -t
         container_name: react_dev_server
         restart: always
-        command: yarn run watch
+        command: yarn start
         ports: [3000:3000]
         networks: [default_network]
         volumes:
@@ -27,14 +27,13 @@ services:
         env_file: [./server/.env.docker]
         container_name: express_server
         restart: always
-        command: yarn run dev
+        command: yarn start
         volumes:
             - ./server/:/usr/app/
             - server_node_modules:/usr/app/node_modules
             - client_build:/usr/client/build            # Note: don't do this is prod
         ports: [3001:3001]
         networks: [default_network]
-        links: [mongo_datastore:mongo_datastore]
         depends_on: [mongo_datastore, react_dev_server]
 
     mongo_datastore:
@@ -42,6 +41,7 @@ services:
         container_name: mongo_datastore
         restart: always
         command: --noprealloc --smallfiles
+        networks: [default_network]
         volumes:
             - mongo_datastore_data:/data/db
         ports: [27017:27017]
