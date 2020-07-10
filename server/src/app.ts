@@ -13,8 +13,13 @@ app.use("/game/*", express.static("../client/build"));
 const expressServer = app.listen(3001);
 const io: IO = socketio(expressServer);
 
-mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser: true, useUnifiedTopology: true}, () => {
-    console.info("successfully connected to database");
+mongoose.connect("mongodb://localhost:27017/pinnacleTyperacer", {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
+    if (err) {
+        console.error("error connecting to database", err);
+        process.exit(1);
+    } else {
+        console.info("successfully connected to database");
+    }
 });
 
 io.on("connect", (socket: Socket) => {
