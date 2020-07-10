@@ -26,10 +26,10 @@ export const PartyLeaderButtonGroup = ({player, isOpen, isOver, gameId}: Props) 
     const onMaxLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxLengthText(e.target.value);
 
     const onChangePassageClick = () => {
-        let minLength = Math.round(parseFloat(minLengthText));
-        minLength = isNaN(minLength) ? Math.round(Math.random() * 200) : minLength; // default minLength is random from 0 to 200 - because when minLength is 0, there are overwhelmingly more short passages
         let maxLength = Math.round(parseFloat(maxLengthText));
         maxLength = isNaN(maxLength) ? 400 : maxLength; // default maxLength is 400
+        let minLength = Math.round(parseFloat(minLengthText));
+        minLength = isNaN(minLength) ? Math.round(Math.random() * Math.min(200, maxLength)) : minLength; // default minLength is random from 0 to 200 (or maxLength if it is small than 200) - because when minLength is 0, there are overwhelmingly more short passages
         socket.emit(SocketSentEventView.CHANGE_PASSAGE, {gameId, minLength, maxLength});
     };
 
