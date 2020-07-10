@@ -34,7 +34,7 @@ export const ChatRoom = ({gameId, player, isOpen, isOver}: Props) => {
 
         bottomRef.current?.scrollIntoView({behavior: "smooth"});
 
-        if (isOpen || isOver) {
+        if (player.WPM >= 0 || isOpen || isOver) {
             setVisible(true);
         } else {
             setVisible(false);
@@ -43,7 +43,7 @@ export const ChatRoom = ({gameId, player, isOpen, isOver}: Props) => {
         return () => {
             socket.removeListener(SocketReceivedEventView.CHAT_MESSAGE);
         };
-    }, [messages, isOpen, isOver]);
+    }, [messages, player.WPM, isOpen, isOver]);
 
     return (
         <Segment style={{position: "fixed", top: "30%", transition: "right 0.2s linear", right: `${visible ? "1%" : "-300px"}`, width: "300px", height: "350px", padding: 0, display: "flex", flexDirection: "column"}}>
