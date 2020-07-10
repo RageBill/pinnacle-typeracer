@@ -14,7 +14,7 @@ export const CreateGame = () => {
     const onNickNameInput = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
 
     return (
-        <Container textAlign="center">
+        <Container textAlign="center" style={{marginTop: "36px"}}>
             <Header as="h1">Create Game</Header>
             <Container text textAlign="left">
                 <Form onSubmit={onSubmit}>

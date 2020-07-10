@@ -4,6 +4,12 @@
  */
 import axios, {AxiosResponse} from "axios";
 
+type QuotableAPIRequest = {
+    maxLength?: number;
+    minLength?: number;
+    tags?: string;
+};
+
 type QuotableAPIResponse = {
     _id: string;
     content: string;
@@ -14,4 +20,4 @@ type QuotableAPIResponse = {
 
 const uri = "http://api.quotable.io/random";
 
-export const getQuotableAPIData = () => axios.get(uri).then((response: AxiosResponse<QuotableAPIResponse>) => response.data.content.split(" "));
+export const getQuotableAPIData = (request?: QuotableAPIRequest) => axios.get(uri, {params: request}).then((response: AxiosResponse<QuotableAPIResponse>) => response.data.content.split(" "));

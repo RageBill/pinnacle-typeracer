@@ -5,7 +5,7 @@ import SocketIO from "socket.io";
 export enum SocketSentEventView {
     UPDATE_GAME = "UPDATE_GAME",
     TIMER = "TIMER",
-    DONE = "DONE",
+    CHAT_MESSAGE = "CHAT_MESSAGE",
 }
 
 export type SocketSentEventData = {
@@ -16,24 +16,24 @@ export type SocketSentEventData = {
         countDown: string | number;
         msg: string;
     };
-    [SocketSentEventView.DONE]: {
-        gameId: string;
+    [SocketSentEventView.CHAT_MESSAGE]: {
+        name: string;
+        text: string;
     };
 };
 
 // Data received (from client) through socket
 export enum SocketReceivedEventView {
-    RESTART_GAME = "RESTART_GAME",
     USER_INPUT = "USER_INPUT",
     TIMER = "TIMER",
     JOIN_GAME = "JOIN_GAME",
     CREATE_GAME = "CREATE_GAME",
+    CHANGE_PASSAGE = "CHANGE_PASSAGE",
+    CHANGE_NAME = "CHANGE_NAME",
+    CHAT_MESSAGE = "CHAT_MESSAGE",
 }
 
 export type SocketReceivedEventData = {
-    [SocketReceivedEventView.RESTART_GAME]: {
-        gameId: string;
-    };
     [SocketReceivedEventView.USER_INPUT]: {
         gameId: string;
         userInput: string;
@@ -49,6 +49,21 @@ export type SocketReceivedEventData = {
     [SocketReceivedEventView.CREATE_GAME]: {
         nickName: string;
     };
+    [SocketReceivedEventView.CHANGE_PASSAGE]: {
+        gameId: string;
+        minLength: number;
+        maxLength: number;
+    };
+    [SocketReceivedEventView.CHANGE_NAME]: {
+        nickName: string;
+        playerSocketId: string;
+        gameId: string;
+    };
+    [SocketReceivedEventView.CHAT_MESSAGE]: {
+        gameId: string;
+        name: string;
+        text: string;
+    };
 };
 
 // Typing the socket
@@ -63,4 +78,8 @@ interface Namespace extends SocketIO.Namespace {
 
 export interface IO extends SocketIO.Server {
     to(room: string): Namespace;
+    clients(...args: any[]): Namespace;
 }
+
+// Typing listeners
+export type SocketEventListener<T extends SocketReceivedEventView> = (socket: Socket, io: IO) => (data: SocketReceivedEventData[T]) => void;

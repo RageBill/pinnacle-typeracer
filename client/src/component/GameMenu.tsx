@@ -5,7 +5,7 @@ import {Button, Container, Header} from "semantic-ui-react";
 export const GameMenu = () => {
     const history = useHistory();
     return (
-        <Container textAlign="center">
+        <Container textAlign="center" style={{marginTop: "36px"}}>
             <Header as="h1">Welcome To Pinnacle Typeracer</Header>
             <Button.Group>
                 <Button onClick={() => history.push("/game/create")} primary>

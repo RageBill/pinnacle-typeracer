@@ -35,7 +35,7 @@ export const ScoreBoard = ({players, player: myself}: Props) => {
 
 ScoreBoard.displayName = "ScoreBoard";
 
-function getScoreBoard(players: Game["players"]) {
+export function getScoreBoard(players: Game["players"]) {
     const scoreBoard = players.filter((player) => player.WPM !== -1);
     return scoreBoard.sort((a, b) => {
         if (a.WPM > b.WPM) {

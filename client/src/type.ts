@@ -1,3 +1,7 @@
+import {SemanticCOLORS} from "semantic-ui-react";
+
+export const semanticColors: SemanticCOLORS[] = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "grey", "black"];
+
 export type Player = {
     _id: string;
     socketId: string;
@@ -18,17 +22,16 @@ export type Game = {
 
 // Data sent (to server) through socket
 export enum SocketSentEventView {
-    RESTART_GAME = "RESTART_GAME",
     USER_INPUT = "USER_INPUT",
     TIMER = "TIMER",
     JOIN_GAME = "JOIN_GAME",
     CREATE_GAME = "CREATE_GAME",
+    CHANGE_PASSAGE = "CHANGE_PASSAGE",
+    CHANGE_NAME = "CHANGE_NAME",
+    CHAT_MESSAGE = "CHAT_MESSAGE",
 }
 
 export type SocketSentEventData = {
-    [SocketSentEventView.RESTART_GAME]: {
-        gameId: string;
-    };
     [SocketSentEventView.USER_INPUT]: {
         gameId: string;
         userInput: string;
@@ -44,13 +47,28 @@ export type SocketSentEventData = {
     [SocketSentEventView.CREATE_GAME]: {
         nickName: string;
     };
+    [SocketSentEventView.CHANGE_PASSAGE]: {
+        gameId: string;
+        minLength: number;
+        maxLength: number;
+    };
+    [SocketSentEventView.CHANGE_NAME]: {
+        nickName: string;
+        playerSocketId: string;
+        gameId: string;
+    };
+    [SocketSentEventView.CHAT_MESSAGE]: {
+        gameId: string;
+        name: string;
+        text: string;
+    };
 };
 
 // Data received (from server) through socket
 export enum SocketReceivedEventView {
     UPDATE_GAME = "UPDATE_GAME",
     TIMER = "TIMER",
-    DONE = "DONE",
+    CHAT_MESSAGE = "CHAT_MESSAGE",
 }
 
 export type SocketReceivedEventData = {
@@ -61,7 +79,8 @@ export type SocketReceivedEventData = {
         countDown: string | number;
         msg: string;
     };
-    [SocketReceivedEventView.DONE]: {
-        gameId: string;
+    [SocketReceivedEventView.CHAT_MESSAGE]: {
+        name: string;
+        text: string;
     };
 };

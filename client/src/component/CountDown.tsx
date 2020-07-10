@@ -13,14 +13,13 @@ export const CountDown = ({isOpen}: Props) => {
         if (isOpen) {
             setTimer({countDown: "", msg: ""});
         }
-
         socket.on(SocketReceivedEventView.TIMER, ({countDown, msg}) => {
             setTimer({countDown, msg});
         });
 
-        socket.on(SocketReceivedEventView.DONE, () => {
-            socket.removeListener("timer");
-        });
+        return () => {
+            socket.removeListener(SocketReceivedEventView.TIMER);
+        };
     }, [isOpen]);
 
     const {countDown, msg} = timer;
