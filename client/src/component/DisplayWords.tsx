@@ -22,7 +22,7 @@ export const DisplayWords = ({words, currentWordIndex, userInput}: Props) => {
     const wordsToBeTyped = getWordsToBeTyped(words, currentWordIndex);
     const overflowFromMistakenCharsLength = userInput.length > currentWord.length ? userInput.length - currentWord.length : 0;
     return (
-        <Segment style={containerStyle}>
+        <Segment style={containerStyle} textAlign="left">
             {typedWords && (
                 <Header as="span" color="green">
                     {typedWords}
