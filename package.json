@@ -1,0 +1,8 @@
+{
+    "name": "pinnacle-typeracer-dev",
+    "private": true,
+    "scripts": {
+        "start": "docker-compose --file docker-compose.dev.yml up",
+        "stop": "docker-compose --file docker-compose.dev.yml down"
+    }
+}

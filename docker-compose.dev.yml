@@ -7,35 +7,35 @@ services:
         build:
             context: ./client
             dockerfile: Dockerfile
-        env_file: [./client/.env]
+        env_file: [./client/.env.docker]
         stdin_open: true # docker run -i
         tty: true        # docker run -t
         container_name: react_dev_server
         restart: always
-        command: yarn run start
+        command: yarn run watch
         ports: [3000:3000]
         networks: [default_network]
         volumes:
             - ./client/:/usr/app/
+            - client_build:/usr/app/build
             - client_node_modules:/usr/app/node_modules
-        depends_on:
-            - express_server
 
     express_server:
         build:
             context: ./server
             dockerfile: Dockerfile
-        env_file: [./server/.env]
+        env_file: [./server/.env.docker]
         container_name: express_server
         restart: always
         command: yarn run dev
         volumes:
             - ./server/:/usr/app/
             - server_node_modules:/usr/app/node_modules
+            - client_build:/usr/client/build            # Note: don't do this is prod
         ports: [3001:3001]
         networks: [default_network]
         links: [mongo_datastore:mongo_datastore]
-        depends_on: [mongo_datastore]
+        depends_on: [mongo_datastore, react_dev_server]
 
     mongo_datastore:
         image: mongo:3.6-xenial
@@ -53,4 +53,5 @@ networks:
 volumes:
     mongo_datastore_data:
     client_node_modules:
+    client_build:
     server_node_modules:
