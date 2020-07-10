@@ -7,9 +7,10 @@ interface Props {
     words: Game["words"];
     currentWordIndex: number;
     userInput: string;
-    isOver: Game["isOver"];
+    isOpen: Game["isOpen"];
     gameId: Game["_id"];
     playerSocketId: Player["socketId"];
+    WPM: Player["WPM"];
 }
 
 const containerStyle = {
@@ -17,7 +18,7 @@ const containerStyle = {
     marginBottom: 36,
 };
 
-export const DisplayWords = ({words, currentWordIndex, userInput, isOver, gameId, playerSocketId}: Props) => {
+export const DisplayWords = ({words, currentWordIndex, userInput, isOpen, gameId, playerSocketId, WPM}: Props) => {
     const [misTypedChars, setMisTypedChars] = useState(0);
     const typedWords = getTypedWords(words, currentWordIndex);
     const currentWord = getCurrentWord(words, currentWordIndex);
@@ -29,14 +30,21 @@ export const DisplayWords = ({words, currentWordIndex, userInput, isOver, gameId
 
     const prevMistakenCharsLength = usePrevious(mistakenCharsLength);
     useEffect(() => {
+        // Reset counting misTypedChars
+        if (isOpen) {
+            setMisTypedChars(0);
+        }
+
+        // Only add misTyped chars when number of mistakenChars increases
         if (currentWordIndex < words.length && mistakenCharsLength > 0 && mistakenCharsLength > prevMistakenCharsLength) {
             setMisTypedChars(misTypedChars + 1);
         }
 
-        if (isOver && typedWords.trim() === words.join(" ").trim()) {
+        // When game is over, and the player finishes the whole passage, send the calculation to the server.
+        if (WPM >= 0) {
             socket.emit(SocketSentEventView.ACCURACY, {gameId, playerSocketId, accuracy: Math.max(typedWords.trim().length - misTypedChars, 0) / typedWords.trim().length});
         }
-    }, [currentWordIndex, gameId, playerSocketId, typedWords, words, misTypedChars, prevMistakenCharsLength, mistakenCharsLength, isOver]);
+    }, [isOpen, currentWordIndex, words, mistakenCharsLength, prevMistakenCharsLength, WPM, gameId, playerSocketId, typedWords, misTypedChars]);
 
     return (
         <Segment style={containerStyle} textAlign="left">

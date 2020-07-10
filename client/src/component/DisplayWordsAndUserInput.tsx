@@ -51,7 +51,7 @@ export const DisplayWordsAndUserInput = ({isOpen, isOver, gameId, words, player}
 
     return (
         <>
-            <DisplayWords words={words} currentWordIndex={currentWordIndex} userInput={userInput} isOver={isOver} gameId={gameId} playerSocketId={player.socketId} />
+            <DisplayWords words={words} currentWordIndex={currentWordIndex} userInput={userInput} isOpen={isOpen} gameId={gameId} playerSocketId={player.socketId} WPM={player.WPM} />
             <Input fluid type="text" disabled={currentWordIndex >= words.length || isOpen || isOver} onChange={onUserInput} value={userInput} ref={textInput} placeholder={getCurrentWord(words, currentWordIndex)} />
         </>
     );
