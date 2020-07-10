@@ -49,7 +49,7 @@ export const TypeRacer = ({gameState}: Props) => {
                     <br />
                     <DisplayGameCode gameId={_id} />
                 </Container>
-                <ChatRoom gameId={_id} player={player} />
+                <ChatRoom gameId={_id} player={player} isOpen={isOpen} isOver={isOver} />
             </>
         ) : (
             <Redirect to="/" />
