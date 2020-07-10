@@ -9,6 +9,7 @@ export type Player = {
     isPartyLeader: boolean;
     WPM: number;
     nickName: string;
+    accuracy?: number;
 };
 
 export type Game = {
@@ -29,12 +30,14 @@ export enum SocketSentEventView {
     CHANGE_PASSAGE = "CHANGE_PASSAGE",
     CHANGE_NAME = "CHANGE_NAME",
     CHAT_MESSAGE = "CHAT_MESSAGE",
+    ACCURACY = "ACCURACY",
 }
 
 export type SocketSentEventData = {
     [SocketSentEventView.USER_INPUT]: {
         gameId: string;
         userInput: string;
+        accuracy?: number;
     };
     [SocketSentEventView.TIMER]: {
         gameId: string;
@@ -61,6 +64,11 @@ export type SocketSentEventData = {
         gameId: string;
         name: string;
         text: string;
+    };
+    [SocketSentEventView.ACCURACY]: {
+        gameId: string;
+        playerSocketId: string;
+        accuracy: number;
     };
 };
 

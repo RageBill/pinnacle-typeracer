@@ -31,6 +31,7 @@ export enum SocketReceivedEventView {
     CHANGE_PASSAGE = "CHANGE_PASSAGE",
     CHANGE_NAME = "CHANGE_NAME",
     CHAT_MESSAGE = "CHAT_MESSAGE",
+    ACCURACY = "ACCURACY",
 }
 
 export type SocketReceivedEventData = {
@@ -63,6 +64,11 @@ export type SocketReceivedEventData = {
         gameId: string;
         name: string;
         text: string;
+    };
+    [SocketReceivedEventView.ACCURACY]: {
+        gameId: string;
+        playerSocketId: string;
+        accuracy: number;
     };
 };
 

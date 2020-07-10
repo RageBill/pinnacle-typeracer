@@ -1,11 +1,15 @@
-import React from "react";
-import {Game} from "../type";
+import React, {useEffect, useRef, useState} from "react";
+import {Game, Player, SocketSentEventView} from "../type";
 import {Header, Segment} from "semantic-ui-react";
+import {socket} from "../socketConfig";
 
 interface Props {
     words: Game["words"];
     currentWordIndex: number;
     userInput: string;
+    isOver: Game["isOver"];
+    gameId: Game["_id"];
+    playerSocketId: Player["socketId"];
 }
 
 const containerStyle = {
@@ -13,7 +17,8 @@ const containerStyle = {
     marginBottom: 36,
 };
 
-export const DisplayWords = ({words, currentWordIndex, userInput}: Props) => {
+export const DisplayWords = ({words, currentWordIndex, userInput, isOver, gameId, playerSocketId}: Props) => {
+    const [misTypedChars, setMisTypedChars] = useState(0);
     const typedWords = getTypedWords(words, currentWordIndex);
     const currentWord = getCurrentWord(words, currentWordIndex);
     const matchedChars = getMatchedChars(currentWord, userInput);
@@ -21,6 +26,18 @@ export const DisplayWords = ({words, currentWordIndex, userInput}: Props) => {
     const restOfCharsLength = currentWord.length - matchedChars.length - mistakenCharsLength > 0 ? currentWord.length - matchedChars.length - mistakenCharsLength : 0;
     const wordsToBeTyped = getWordsToBeTyped(words, currentWordIndex);
     const overflowFromMistakenCharsLength = userInput.length > currentWord.length ? userInput.length - currentWord.length : 0;
+
+    const prevMistakenCharsLength = usePrevious(mistakenCharsLength);
+    useEffect(() => {
+        if (currentWordIndex < words.length && mistakenCharsLength > 0 && mistakenCharsLength > prevMistakenCharsLength) {
+            setMisTypedChars(misTypedChars + 1);
+        }
+
+        if (isOver && typedWords.trim() === words.join(" ").trim()) {
+            socket.emit(SocketSentEventView.ACCURACY, {gameId, playerSocketId, accuracy: Math.max(typedWords.trim().length - misTypedChars, 0) / typedWords.trim().length});
+        }
+    }, [currentWordIndex, gameId, playerSocketId, typedWords, words, misTypedChars, prevMistakenCharsLength, mistakenCharsLength, isOver]);
+
     return (
         <Segment style={containerStyle} textAlign="left">
             {typedWords && (
@@ -79,4 +96,13 @@ function getMatchedChars(currentWord: string, userInput: string): string {
 function getWordsToBeTyped(words: Game["words"], currentWordIndex: number): string {
     // add an empty space before this to separate it from the current word
     return " " + words.slice(currentWordIndex + 1, words.length).join(" ");
+}
+
+// Custom Hooks
+function usePrevious(value: any): any {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
 }

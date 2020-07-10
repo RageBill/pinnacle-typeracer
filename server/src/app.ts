@@ -2,7 +2,7 @@ import express from "express";
 import socketio from "socket.io";
 import mongoose from "mongoose";
 import {IO, Socket, SocketReceivedEventView} from "./type";
-import {changeName, changePassage, chatMessage, createGame, joinGame, timer, userInput} from "./EventListener";
+import {accuracy, changeName, changePassage, chatMessage, createGame, joinGame, timer, userInput} from "./EventListener";
 
 const app = express();
 
@@ -30,4 +30,5 @@ io.on("connect", (socket: Socket) => {
     socket.on(SocketReceivedEventView.CHANGE_PASSAGE, changePassage(socket, io));
     socket.on(SocketReceivedEventView.CHANGE_NAME, changeName(socket, io));
     socket.on(SocketReceivedEventView.CHAT_MESSAGE, chatMessage(socket, io));
+    socket.on(SocketReceivedEventView.ACCURACY, accuracy(socket, io));
 });

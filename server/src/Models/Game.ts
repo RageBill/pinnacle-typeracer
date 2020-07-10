@@ -9,6 +9,7 @@ export const PlayerSchema = createSchema({
     isPartyLeader: Type.boolean({required: true, default: false}),
     WPM: Type.number({required: true, default: -1}),
     nickName: Type.string({required: true}),
+    accuracy: Type.number({}),
 });
 
 export const GameSchema = createSchema({

@@ -18,14 +18,13 @@ export const userInput: SocketEventListener<SocketReceivedEventView.USER_INPUT> 
                         const endTime = new Date().getTime();
                         const {startTime} = game;
                         player.WPM = calculateWPM(startTime!, endTime, player);
-                        game = await game.save();
 
                         if (game.isOpen === false && game.isOver === false) {
                             if (game.players.every((player: PlayerProps) => player.WPM >= 0)) {
                                 game.isOver = true;
                             }
-                            game = await game.save();
                         }
+                        game = await game.save();
 
                         io.to(gameId).emit(SocketSentEventView.UPDATE_GAME, {game});
                     }

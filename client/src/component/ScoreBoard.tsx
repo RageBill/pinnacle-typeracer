@@ -16,6 +16,7 @@ export const ScoreBoard = ({players, player: myself}: Props) => {
                     <Table.HeaderCell>#</Table.HeaderCell>
                     <Table.HeaderCell>Player</Table.HeaderCell>
                     <Table.HeaderCell>WPM</Table.HeaderCell>
+                    <Table.HeaderCell>Accuracy</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -24,6 +25,7 @@ export const ScoreBoard = ({players, player: myself}: Props) => {
                         <Table.Cell>{index + 1}</Table.Cell>
                         <Table.Cell>{player.socketId === myself.socketId ? <Label ribbon>You</Label> : player.nickName}</Table.Cell>
                         <Table.Cell>{player.WPM}</Table.Cell>
+                        <Table.Cell>{player.accuracy ? `${(player.accuracy * 100).toFixed(2)}%` : "--"}</Table.Cell>
                     </Table.Row>
                 ))}
             </Table.Body>
