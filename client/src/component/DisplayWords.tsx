@@ -11,6 +11,7 @@ interface Props {
     gameId: Game["_id"];
     playerSocketId: Player["socketId"];
     WPM: Player["WPM"];
+    accuracy: Player["accuracy"];
 }
 
 const containerStyle = {
@@ -18,7 +19,7 @@ const containerStyle = {
     marginBottom: 36,
 };
 
-export const DisplayWords = ({words, currentWordIndex, userInput, isOpen, gameId, playerSocketId, WPM}: Props) => {
+export const DisplayWords = ({words, currentWordIndex, userInput, isOpen, gameId, playerSocketId, WPM, accuracy}: Props) => {
     const [misTypedChars, setMisTypedChars] = useState(0);
     const typedWords = getTypedWords(words, currentWordIndex);
     const currentWord = getCurrentWord(words, currentWordIndex);
@@ -30,21 +31,23 @@ export const DisplayWords = ({words, currentWordIndex, userInput, isOpen, gameId
 
     const prevMistakenCharsLength = usePrevious(mistakenCharsLength);
     useEffect(() => {
-        // Reset counting misTypedChars
-        if (isOpen) {
-            setMisTypedChars(0);
-        }
+        if (!accuracy) {
+            // Reset counting misTypedChars
+            if (isOpen) {
+                setMisTypedChars(0);
+            }
 
-        // Only add misTyped chars when number of mistakenChars increases
-        if (currentWordIndex < words.length && mistakenCharsLength > 0 && mistakenCharsLength > prevMistakenCharsLength) {
-            setMisTypedChars(misTypedChars + 1);
-        }
+            // Only add misTyped chars when number of mistakenChars increases
+            if (currentWordIndex < words.length && mistakenCharsLength > 0 && mistakenCharsLength > prevMistakenCharsLength) {
+                setMisTypedChars(misTypedChars + 1);
+            }
 
-        // When game is over, and the player finishes the whole passage, send the calculation to the server.
-        if (WPM >= 0) {
-            socket.emit(SocketSentEventView.ACCURACY, {gameId, playerSocketId, accuracy: Math.max(typedWords.trim().length - misTypedChars, 0) / typedWords.trim().length});
+            // When game is over, and the player finishes the whole passage, send the calculation to the server.
+            if (WPM >= 0) {
+                socket.emit(SocketSentEventView.ACCURACY, {gameId, playerSocketId, accuracy: Math.max(typedWords.trim().length - misTypedChars, 0) / typedWords.trim().length});
+            }
         }
-    }, [isOpen, currentWordIndex, words, mistakenCharsLength, prevMistakenCharsLength, WPM, gameId, playerSocketId, typedWords, misTypedChars]);
+    }, [isOpen, currentWordIndex, words, mistakenCharsLength, prevMistakenCharsLength, WPM, gameId, playerSocketId, typedWords, misTypedChars, accuracy]);
 
     return (
         <Segment style={containerStyle} textAlign="left">
