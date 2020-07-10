@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Game, Player, SocketReceivedEventView, SocketSentEventView} from "../type";
-import {Button, Input, List, Segment} from "semantic-ui-react";
+import {Button, Form, List, Segment} from "semantic-ui-react";
 import {socket} from "../socketConfig";
 
 interface Props {
@@ -39,8 +39,8 @@ export const ChatRoom = ({gameId, player}: Props) => {
         <Segment style={{position: "fixed", top: "30%", transition: "right 0.2s linear", right: `${visible ? "1%" : "-300px"}`, width: "300px", height: "350px", padding: 0, display: "flex", flexDirection: "column"}}>
             <Button icon={`angle ${visible ? "right" : "left"}`} style={{position: "absolute", left: "-45px"}} onClick={toggleChat} />
             <List animated style={{flex: 1, padding: 10, marginBottom: 0, overflowY: "scroll"}}>
-                {messages.map((_) => (
-                    <List.Item style={{width: "100%"}}>
+                {messages.map((_, index) => (
+                    <List.Item style={{width: "100%"}} key={index}>
                         <List.Icon name="user" />
                         <List.Content>
                             <List.Content>
@@ -52,10 +52,12 @@ export const ChatRoom = ({gameId, player}: Props) => {
                 ))}
                 <div ref={bottomRef} />
             </List>
-            <Input fluid value={text} onChange={onInput} action>
-                <input />
-                <Button icon="send" disabled={text.length === 0} onClick={onSubmit} />
-            </Input>
+            <Form onSubmit={onSubmit}>
+                <Form.Input fluid value={text} onChange={onInput} action>
+                    <input />
+                    <Button icon="send" disabled={text.length === 0} onClick={onSubmit} />
+                </Form.Input>
+            </Form>
         </Segment>
     );
 };
