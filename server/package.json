@@ -23,7 +23,7 @@
     },
     "homepage": "https://github.com/RageBill/pinnacle-typeracer#readme",
     "dependencies": {
-        "axios": "0.19.2",
+        "axios": "0.21.1",
         "express": "4.17.1",
         "mongoose": "5.9.19",
         "socket.io": "2.3.0"
